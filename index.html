@@ -332,8 +332,9 @@ textarea{resize:none}
         <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
           <button class="nav-tab active" data-view="view-command" title="COMMAND" style="padding:0 10px"><i class="fa-solid fa-bolt" style="font-size:11px"></i></button>
           <button class="nav-tab" data-view="view-physical" title="PHYSICAL" style="padding:0 10px"><i class="fa-solid fa-dumbbell" style="font-size:11px"></i></button>
-          <button class="nav-tab" data-view="view-neural" title="NEURAL" style="padding:0 10px"><i class="fa-solid fa-brain" style="font-size:11px"></i></button>
-          <button class="nav-tab" data-view="view-matrix" title="MATRIX" style="padding:0 10px"><i class="fa-solid fa-chart-simple" style="font-size:11px"></i></button>
+                    <button class="nav-tab" data-view="view-neural" title="NEURAL" style="padding:0 10px"><i class="fa-solid fa-brain" style="font-size:11px"></i></button>
+                    <button class="nav-tab" data-view="view-budget" title="BUDGET" style="padding:0 10px"><i class="fa-solid fa-indian-rupee-sign" style="font-size:11px"></i></button>
+                    <button class="nav-tab" data-view="view-matrix" title="MATRIX" style="padding:0 10px"><i class="fa-solid fa-chart-simple" style="font-size:11px"></i></button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px">
                   <button id="btn-undo-app" class="btn" style="padding:3px 8px;font-size:10px" title="Undo Last Action"><i class="fa-solid fa-rotate-left"></i></button>
@@ -341,9 +342,9 @@ textarea{resize:none}
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
         <div style="text-align:right;display:flex;flex-direction:column;justify-content:center">
-          <div id="sys-rank" class="mono" style="font-size:10px;color:var(--purple);font-weight:800;letter-spacing:0.05em;line-height:1.2">SLAVE</div>
-          <div class="mono" style="font-size:9px;color:var(--tm);margin-top:1px;font-weight:700">LV <span id="sys-level" style="color:var(--tp)">1</span></div>
-        </div>
+                  <div id="sys-rank" class="mono" style="font-size:10px;color:var(--purple);font-weight:800;letter-spacing:0.05em;line-height:1.2">SLAVE</div>
+                  <div class="mono" style="font-size:9px;color:var(--tm);margin-top:1px;font-weight:700">LV <span id="sys-level" style="color:var(--tp)">1</span></div>
+                </div>
         <div style="display:flex;flex-direction:column;gap:3px;justify-content:center">
                   <div style="width:110px;height:6px;background:#161616;border:1px solid var(--border);border-radius:3px;overflow:hidden;padding:0;display:flex;align-items:center">
                     <div id="xp-bar" style="height:100%;background:linear-gradient(90deg, var(--blue), var(--purple));width:0%;transition:width .5s cubic-bezier(0.4, 0, 0.2, 1);border-radius:2px"></div>
@@ -401,7 +402,7 @@ textarea{resize:none}
           <div class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--red)">DOPAMINE TAX</div>
           <div style="font-size:11px;color:var(--tm);margin-top:2px">Consumed short-form content today?</div>
         </div>
-        <button class="btn btn-red" style="font-size:10px;padding:4px 10px" onclick="window.applyDopamineTax()"><i class="fa-solid fa-hand-holding-dollar"></i> TAX</button>
+        <button class="btn btn-red" style="font-size:10px;padding:4px 10px" onclick="window.applyDopamineTax()">CONFIRM GUILT</button>
       </div>
       <div style="display:flex;align-items:center;gap:16px;border-top:1px solid var(--border);padding-top:8px;margin-top:2px">
         <div>
@@ -640,12 +641,78 @@ textarea{resize:none}
         </div>
         <span class="mono" style="font-size:9px;color:var(--td)">MORE</span>
         <span id="heatmap-tooltip" class="mono" style="font-size:9px;color:var(--tm);margin-left:10px"></span>
-      </div>
-    </div>
-  </div>
-</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<script type="module">
+        <div id="view-budget" class="view" style="flex-direction:column; gap:12px; overflow-y:auto">
+           <div style="display:flex; gap:10px; flex-shrink:0; flex-wrap:wrap">
+               <div class="card" style="flex:1; min-width:120px; padding:12px; border-left:2px solid var(--tp)">
+                   <div class="label">TOTAL BALANCE</div>
+                   <div class="mono" style="font-size:24px; font-weight:700; margin-top:4px"><span id="budget-total" style="color:var(--tp)">₹0</span></div>
+               </div>
+               <div class="card" style="flex:1; min-width:100px; padding:12px; border-left:2px solid var(--blue)">
+                   <div class="label">ONLINE</div>
+                   <div class="mono" style="font-size:16px; font-weight:700; margin-top:4px"><span id="budget-online" style="color:var(--tp)">₹0</span></div>
+               </div>
+               <div class="card" style="flex:1; min-width:100px; padding:12px; border-left:2px solid var(--amber)">
+                   <div class="label">CASH</div>
+                   <div class="mono" style="font-size:16px; font-weight:700; margin-top:4px"><span id="budget-cash" style="color:var(--tp)">₹0</span></div>
+               </div>
+           </div>
+
+           <div class="card" style="display:flex;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;background:rgba(255,255,255,0.02)">
+               <span class="mono" style="color:var(--amber);font-weight:700;font-size:15px">›</span>
+       
+               <input id="budget-item" type="text" style="flex:1;background:transparent;border:none;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tp);padding:0" placeholder="e.g. 100 f (Fruit), 50 milk, 200 gt Rahul" autocomplete="off" onkeydown="if(event.key==='Enter')window.addBudgetEntry()">
+       
+               <button class="btn btn-amber" style="padding:3px 10px;font-size:10px;background:rgba(227,179,65,0.05)" onclick="window.addBudgetEntry()"><i class="fa-solid fa-plus" style="font-size:9px"></i> ADD</button>
+           </div>
+   
+           <div style="display:flex;flex-wrap:wrap;gap:5px;padding:6px 2px;flex-shrink:0">
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('v')">v · VEG</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('f')">f · FRUIT</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('m')">m · MILK</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('g')">g · GAS</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('ff')">ff · FAST FOOD</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('r')">r · RATION</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('gt')">gt · GIVEN TO</button>
+                          <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('tf')">tf · TAKEN FROM</button>
+                      </div>
+
+                      <div id="budget-person-container" class="card" style="display:none;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;background:rgba(255,255,255,0.01); margin-top:-8px">
+               <span class="mono" style="color:var(--tm);font-size:12px">@</span>
+               <input id="budget-person" type="text" style="flex:1;background:transparent;border:none;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tp);padding:0" placeholder="person name...">
+           </div>
+
+           <!-- LEDGER / STATS TABS -->
+                      <div style="display:flex;gap:4px;flex-shrink:0">
+                          <button class="btn" id="btab-ledger" style="font-size:10px;padding:4px 12px;color:var(--amber);background:rgba(227,179,65,0.08)" onclick="window.switchBudgetTab('ledger')">LEDGER</button>
+                          <button class="btn" id="btab-stats" style="font-size:10px;padding:4px 12px" onclick="window.switchBudgetTab('stats')">ANALYTICS</button>
+                      </div>
+
+                      <div class="card" id="budget-ledger-panel" style="flex:1; padding:16px; display:flex; flex-direction:column; overflow:hidden;">
+                          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-shrink:0;">
+                              <div class="mono" style="font-size:10px; color:var(--tp); letter-spacing:.08em;">TRANSACTION LEDGER</div>
+                          </div>
+                          <div id="budget-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding-right:4px;">
+                          </div>
+                      </div>
+
+                      <div class="card" id="budget-stats-panel" style="display:none; flex:1; padding:16px; overflow-y:auto;">
+                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0">
+                              <div class="mono" style="font-size:10px;color:var(--tp);letter-spacing:.08em">ANALYTICS</div>
+                              <div style="display:flex;gap:4px">
+                                  <button class="btn" id="bstat-monthly" style="font-size:9px;padding:3px 9px;color:var(--blue);background:rgba(92,157,255,0.08)" onclick="window.switchBudgetStat('monthly')">MONTHLY</button>
+                                  <button class="btn" id="bstat-daily" style="font-size:9px;padding:3px 9px" onclick="window.switchBudgetStat('daily')">DAILY</button>
+                              </div>
+                          </div>
+                          <div id="budget-stats-content"></div>
+                      </div>
+                      </div>
+
+        <script type="module">
 // ═══════════════════════════════════════════════
 // CLOUD SYSTEM ARCHITECTURE (FIREBASE REALTIME DB)
 // ═══════════════════════════════════════════════
@@ -673,6 +740,7 @@ const DEFAULT = {
   profile: { username:'OPERATIVE', level:1, xp:0, rank:'SLAVE', avatarUrl:'' },
     settings: { dailyXPGoal:500, lockDuration:25 },
   tasks: [],
+  budget: [],
   timeline: [
     {id:'t1',time:'07:00',label:'SYSTEM START — WAKE UP',color:'var(--td)'},
     {id:'t2',time:'07:10',label:'MAINTENANCE: BATH / BRUSH',color:'var(--td)'},
@@ -682,8 +750,8 @@ const DEFAULT = {
     {id:'t6',time:'11:10',label:'FUEL: BADAAM, CHANA, BANANA',color:'var(--green)'},
     {id:'t7',time:'12:10',label:'DEPLOYMENT: COLLEGE',color:'var(--purple)'},
     {id:'t8',time:'17:20',label:'RETURN TO BASE',color:'var(--td)'},
-    {id:'t9',time:'17:30',label:'FUEL RECHARGE: EAT FOOD',color:'var(--green)'},
-    {id:'t10',time:'18:00',label:'NEURAL COMPILE: STUDY / CODE',color:'var(--blue)'},
+        {id:'t9',time:'17:30',label:'FUEL RECHARGE: EAT FOOD',color:'var(--green)'},
+        {id:'t10',time:'18:00',label:'NEURAL COMPILE: STUDY / CODE',color:'var(--blue)'},
     {id:'t11',time:'20:00',label:'FUEL: CHURA MILK, CHANA',color:'var(--green)'},
     {id:'t12',time:'20:30',label:'NEURAL COMPILE: FINAL STUDY BLOCK',color:'var(--blue)'},
     {id:'t13',time:'21:30',label:'PHYSICAL PROTOCOL: EXERCISE',color:'var(--red)'},
@@ -716,37 +784,7 @@ const DEFAULT = {
   taskCatFilter: ''
 };
 
-let S;
-try {
-  const raw = localStorage.getItem('sov_v2');
-  const parsed = raw ? JSON.parse(raw) : null;
-  // Merge parsed data with DEFAULT to ensure all keys exist
-  if (parsed) {
-    S = Object.assign({}, DEFAULT, parsed);
-    S.profile = Object.assign({}, DEFAULT.profile, parsed.profile || {});
-    S.settings = Object.assign({}, DEFAULT.settings, parsed.settings || {});
-    S.neural = Object.assign({}, DEFAULT.neural, parsed.neural || {});
-    S.neural.decks = (parsed.neural && parsed.neural.decks) ? parsed.neural.decks : DEFAULT.neural.decks;
-    S.neural.subjects = (parsed.neural && parsed.neural.subjects) ? parsed.neural.subjects : [];
-    S.neural.meditation_log = (parsed.neural && parsed.neural.meditation_log) ? parsed.neural.meditation_log : [];
-    S.tasks = parsed.tasks || [];
-    S.exercises = parsed.exercises || DEFAULT.exercises;
-    S.workout_log = parsed.workout_log || [];
-    S.timeline = parsed.timeline || DEFAULT.timeline;
-    S.timeline_completed = parsed.timeline_completed || {};
-    S.heatmap = parsed.heatmap || {};
-    S.detox_streak = parsed.detox_streak || 0;
-    S.detox_last_checkin = parsed.detox_last_checkin || null;
-    S.taskSortMode = parsed.taskSortMode || 'time';
-    S.taskFilter = parsed.taskFilter || 'all';
-    S.taskCatFilter = parsed.taskCatFilter || '';
-  } else {
-    S = JSON.parse(JSON.stringify(DEFAULT));
-  }
-} catch(e) {
-  console.error('State load error, resetting:', e);
-  S = JSON.parse(JSON.stringify(DEFAULT));
-}
+let S = JSON.parse(JSON.stringify(DEFAULT));
 
 var appUndoStack = [];
 function pushAppHistory() {
@@ -763,11 +801,12 @@ document.getElementById('btn-undo-app').addEventListener('click', function() {
     renderExercises();
     if (typeof renderNeural === 'function') renderNeural();
     if (typeof window.filterSyllabusBySem === 'function') window.filterSyllabusBySem();
-    if (typeof window.renderMeditation === 'function') window.renderMeditation();
-    if (typeof renderTimeline === 'function') renderTimeline();
-    if (document.getElementById('view-matrix') && document.getElementById('view-matrix').classList.contains('active')) {
-      renderMatrix();
-    }
+        if (typeof window.renderMeditation === 'function') window.renderMeditation();
+        if (typeof window.renderBudget === 'function') window.renderBudget();
+        if (typeof renderTimeline === 'function') renderTimeline();
+        if (document.getElementById('view-matrix') && document.getElementById('view-matrix').classList.contains('active')) {
+          renderMatrix();
+        }
     toast('ACTION UNDONE', 'amber');
   } else {
     toast('NOTHING TO UNDO', 'td');
@@ -786,6 +825,10 @@ if(!S.neural.meditation_log) S.neural.meditation_log = [];
 if(!S.taskSortMode) S.taskSortMode = 'time';
 if(!S.taskFilter) S.taskFilter = 'all';
 if(!S.taskCatFilter) S.taskCatFilter = '';
+if(!S.tasks) S.tasks = [];
+if(!S.budget) S.budget = [];
+if(!S.workout_log) S.workout_log = [];
+if(!S.exercises) S.exercises = DEFAULT.exercises;
 
 const MASTER_SYLLABUS = {
   1: [
@@ -842,7 +885,7 @@ const MASTER_SYLLABUS = {
     { code: "SUCCBCAGAI203", name: "Computer Organization and Architecture", hours: 45, units: [
       { num: 1, title: "Digital Logic Blocks & Signed Math", desc: "Combinational gates, flip-flop sequences, counters, variable sizing, fixed/floating point normalization algorithms." },
       { num: 2, title: "Register Topology & Bus Protocols", desc: "Internal register maps, bus communication logic, instruction execution steps, timing matrix controls, interruption sequences." },
-      { num: 3, title: "CPU Design, Formats & Instruction Sets", desc: "Stack layout rules, micro-operations, addressing modes, addressing blocks, macro instructions, execution maps." },
+      { num: 3, title: "CPU Design, Formats & Instruction Sets", desc: "Stack layout rules, micro-operations, addressing modes, assembly parameters, RISC/CISC engine trade-offs, pipelining branches." },
       { num: 4, title: "Memory Hierarchies & Input/Output Channeling", desc: "Cache maps, mapping strategies, DMA architectures, module protocols, isolated/memory mapped input vectors." }
     ]},
     { code: "SUCCBCAGAI204", name: "Data Structure", hours: 45, units: [
@@ -1100,7 +1143,7 @@ window.filterSyllabusBySem = function() {
 }
 
 window.selectMasterSubject = function(sem, code) {
-  window.activeSubjectId = code;
+  activeSubjectId = code;
   const subj = MASTER_SYLLABUS[sem].find(s => s.code === code);
   $('syllabus-idle').style.display = 'none';
   $('syllabus-detail').style.display = 'flex';
@@ -1157,6 +1200,7 @@ window.renderMasterTopics = function(code) {
       
       window.save();
       window.renderMasterTopics(code);
+      // Update sidebar without breaking scroll position
       const sem = $('syl-sem-select').value;
       const subjects = MASTER_SYLLABUS[sem] || [];
       const sidebarItems = $('subject-list').children;
@@ -1172,47 +1216,58 @@ window.renderMasterTopics = function(code) {
   });
 }
 
+let isCloudSynced = false;
+
 window.save = function() {
-  try {
-    localStorage.setItem('sov_v2', JSON.stringify(S));
-  } catch(e) { console.error('localStorage save error:', e); }
+  if (!isCloudSynced) return;
+  S.lastUpdated = Date.now();
   set(ref(db, 'operatives/' + OPERATIVE_ID), S).catch(err => console.error("Firebase Sync Fail:", err));
 }
 
 window.syncFromFirebase = function() {
   if (typeof toast === 'function') toast('SYNCING CLOUD CORE...', 'purple');
   get(ref(db, 'operatives/' + OPERATIVE_ID)).then((snapshot) => {
+    isCloudSynced = true;
     if (snapshot.exists()) {
-      var cloudData = snapshot.val();
-      // Deep merge: keep defaults for any missing keys so rendering never breaks
-      S = Object.assign({}, DEFAULT, cloudData);
-      // Ensure nested objects are also safe
-      S.profile = Object.assign({}, DEFAULT.profile, cloudData.profile || {});
-      S.settings = Object.assign({}, DEFAULT.settings, cloudData.settings || {});
-      S.neural = Object.assign({}, DEFAULT.neural, cloudData.neural || {});
-      S.neural.decks = (cloudData.neural && cloudData.neural.decks) ? cloudData.neural.decks : DEFAULT.neural.decks;
-      S.neural.subjects = (cloudData.neural && cloudData.neural.subjects) ? cloudData.neural.subjects : [];
-      S.neural.meditation_log = (cloudData.neural && cloudData.neural.meditation_log) ? cloudData.neural.meditation_log : [];
-      S.tasks = cloudData.tasks || [];
-      S.exercises = cloudData.exercises || DEFAULT.exercises;
-      S.workout_log = cloudData.workout_log || [];
-      S.timeline = cloudData.timeline || DEFAULT.timeline;
-      S.timeline_completed = cloudData.timeline_completed || {};
-      S.heatmap = cloudData.heatmap || {};
-      S.detox_streak = cloudData.detox_streak || 0;
-      S.detox_last_checkin = cloudData.detox_last_checkin || null;
-      S.taskSortMode = cloudData.taskSortMode || 'time';
-      S.taskFilter = cloudData.taskFilter || 'all';
-      S.taskCatFilter = cloudData.taskCatFilter || '';
+      const cloudState = snapshot.val();
+      const cloudTime = cloudState.lastUpdated || 0;
+      const localTime = S.lastUpdated || 0;
 
-      localStorage.setItem('sov_v2', JSON.stringify(S));
-      if (typeof updateHeader === 'function') updateHeader();
+      if (cloudTime >= localTime) {
+        S = cloudState;
+      } else {
+        window.save();
+        if (typeof toast === 'function') toast('LOCAL OVERRIDE PUSHED TO CLOUD', 'blue');
+        return;
+      }
+      
+      // Apply migrations/defaults to retrieved state
+            if(!S.settings) S.settings = DEFAULT.settings;
+            if(!S.settings.lockDuration) S.settings.lockDuration = 25;
+            if(!S.heatmap) S.heatmap = {};
+            if(!S.timeline) S.timeline = DEFAULT.timeline;
+            if(!S.detox_streak) S.detox_streak = 0;
+            if(!S.timeline_completed) S.timeline_completed = {};
+            if(!S.neural) S.neural = JSON.parse(JSON.stringify(DEFAULT.neural));
+            if(!S.neural.subjects) S.neural.subjects = [];
+            if(!S.neural.meditation_log) S.neural.meditation_log = [];
+            if(!S.taskSortMode) S.taskSortMode = 'time';
+                        if(!S.taskFilter) S.taskFilter = 'all';
+                        if(!S.taskCatFilter) S.taskCatFilter = '';
+                        if(!S.tasks) S.tasks = [];
+                        if(!S.budget) S.budget = [];
+                        if(!S.workout_log) S.workout_log = [];
+                        if(!S.exercises) S.exercises = DEFAULT.exercises;
+
+                  if (typeof updateHeader === 'function') updateHeader();
       if (typeof renderTasks === 'function') renderTasks();
       if (typeof renderExercises === 'function') renderExercises();
-      if (typeof renderTimeline === 'function') renderTimeline();
       if (typeof window.filterSyllabusBySem === 'function') window.filterSyllabusBySem();
       if (typeof window.renderMeditation === 'function') window.renderMeditation();
+      if (typeof renderTimeline === 'function') renderTimeline();
       if (typeof updateDetoxUI === 'function') updateDetoxUI();
+            if (typeof updateSortButtons === 'function') updateSortButtons();
+            if (typeof window.renderBudget === 'function') window.renderBudget();
       var matrixView = document.getElementById('view-matrix');
       if (matrixView && matrixView.classList.contains('active') && typeof renderMatrix === 'function') {
         renderMatrix();
@@ -1223,6 +1278,7 @@ window.syncFromFirebase = function() {
       window.save();
     }
   }).catch((err) => {
+    isCloudSynced = true;
     console.error("Sync Error:", err);
     if (typeof toast === 'function') toast('SYNC REFUSED — RUNNING LOCAL INSTANCE', 'red');
   });
@@ -1269,6 +1325,7 @@ function addXP(amount, source, x, y) {
   S.profile.level = after.level;
   S.profile.rank = getRank(after.level);
 
+  // Track heatmap
   const today = dateKey(new Date());
   S.heatmap[today] = (S.heatmap[today] || 0) + Math.max(0, amount);
 
@@ -1329,6 +1386,8 @@ function updateHeader() {
 function $(id) { return document.getElementById(id); }
 function dateKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` }
 
+let _lockInterval = null;
+
 function toast(msg, type='blue') {
   const c = $('toasts');
   const el = document.createElement('div');
@@ -1379,8 +1438,14 @@ window.saveSettings = function() {
 }
 window.resetSystem = function() {
   if(confirm('WIPE ALL DATA? This cannot be undone.')) {
-    localStorage.removeItem('sov_v2');
-    location.reload();
+    set(ref(db, 'operatives/' + OPERATIVE_ID), DEFAULT)
+      .then(() => {
+        location.reload();
+      })
+      .catch(err => {
+        console.error("Reset Fail:", err);
+        if (typeof toast === 'function') toast('RESET FAILED', 'red');
+      });
   }
 }
 
@@ -1450,7 +1515,6 @@ window.toggleTimelineBlockCompletion = function(id, event) {
 
 function renderTimeline() {
   const container = $('routine-timeline');
-  if(!container) return;
   container.innerHTML = '';
   const now = new Date();
   let nowMins = now.getHours()*60+now.getMinutes();
@@ -1485,7 +1549,7 @@ function renderTimeline() {
           <div class="task-check ${isDone?'checked':''}" style="margin-right:8px; width:13px; height:13px;" onclick="window.toggleTimelineBlockCompletion('${block.id}', event)">${isDone?'<i class="fa-solid fa-check" style="font-size:7px;color:#0b0b0b"></i>':''}</div>
           <span style="min-width:38px;color:${isActive?block.color:'var(--td)'};font-size:10px;${isDone?'text-decoration:line-through':''}">${block.time}</span>
           <span style="color:${isActive?block.color:(isPast?'var(--td)':'var(--tm)')};font-size:11px;flex:1;${isDone?'text-decoration:line-through':''}">${block.label}</span>
-          ${isActive && !isDone?'<span style="font-size:8px;color='+block.color+';margin-left:4px">◄ NOW</span>':''}
+          ${isActive && !isDone?'<span style="font-size:8px;color:'+block.color+';margin-left:4px">◄ NOW</span>':''}
           <span class="mono" style="font-size:11px;color:${isDone?'var(--td)':'var(--blue)'};margin-left:6px;margin-right:4px;flex-shrink:0">15 XP</span>
           <div class="tl-controls" style="display:none;position:absolute;right:4px;top:50%;transform:translateY(-50%);gap:4px">
             <button style="background:var(--surface);border:1px solid var(--border);color:var(--td);padding:2px 6px;border-radius:2px;font-size:9px;cursor:pointer" onclick="event.stopPropagation(); window.openTimelineModal('${block.id}')"><i class="fa-solid fa-pen"></i></button>
@@ -1526,7 +1590,7 @@ document.querySelectorAll('.nav-tab[data-view]').forEach(btn => {
     btn.classList.add('active');
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     $(btn.dataset.view).classList.add('active');
-    if(btn.dataset.view=='view-matrix') renderMatrix();
+    if(btn.dataset.view==='view-matrix') renderMatrix();
   });
 });
 
@@ -1584,22 +1648,27 @@ function parseTask(raw) {
 function getFilteredSortedTasks() {
   let tasks = [...S.tasks];
 
+  // Category filter
   if(S.taskCatFilter) tasks = tasks.filter(t => t.category === S.taskCatFilter);
 
+  // View filter
   const today = dateKey(new Date());
   if(S.taskFilter === 'today') tasks = tasks.filter(t => dateKey(new Date(t.createdAt)) === today);
   if(S.taskFilter === 'pending') tasks = tasks.filter(t => !t.completed);
   if(S.taskFilter === 'done') tasks = tasks.filter(t => t.completed);
 
+  // Sort
   if(S.taskSortMode === 'time') tasks.sort((a,b)=>(a.time||'25:00').localeCompare(b.time||'25:00'));
   else if(S.taskSortMode === 'xp') tasks.sort((a,b)=>b.xp-a.xp);
   else if(S.taskSortMode === 'created') tasks.sort((a,b)=>a.createdAt-b.createdAt);
+  // custom = no re-sort
 
+  // Completed always last
   tasks.sort((a,b)=>{ if(a.completed!==b.completed) return a.completed?1:-1; return 0; });
   return tasks;
 }
 
-window.handleTaskToTimelineDrop = function(e) {
+function handleTaskToTimelineDrop(e) {
   e.preventDefault();
   $('routine-timeline').style.background = 'transparent';
   var taskId = e.dataTransfer.getData('text/plain');
@@ -1637,7 +1706,6 @@ window.handleTaskToTimelineDrop = function(e) {
 
 function renderTasks() {
   const list = $('task-list');
-  if(!list) return;
   list.innerHTML = '';
   const tasks = getFilteredSortedTasks();
 
@@ -1653,7 +1721,8 @@ function renderTasks() {
     el.setAttribute('draggable','true');
     el.dataset.id = task.id;
 
-    const catClass = task.category ? `cat-${task.category}` : 'cat-default';
+    const catColor = CAT_COLORS[task.category] || 'var(--tm)';
+        const catClass = task.category ? `cat-${task.category}` : 'cat-default';
 
         let timeHtml = '';
         if(task.time) {
@@ -1695,6 +1764,7 @@ function renderTasks() {
     list.appendChild(el);
   });
 
+  // Events
   list.querySelectorAll('.task-check').forEach(el => {
     el.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1705,6 +1775,7 @@ function renderTasks() {
   list.querySelectorAll('.task-edit-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); window.openEditTaskModal(e.currentTarget.dataset.id); }));
   list.querySelectorAll('.task-del-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); deleteTask(e.currentTarget.dataset.id); }));
 
+  // Drag & drop
     let dragId = null;
     list.querySelectorAll('.task-card').forEach(function(el) {
       el.addEventListener('dragstart', function(e) { 
@@ -1713,7 +1784,7 @@ function renderTasks() {
         e.dataTransfer.setData('text/plain', el.dataset.id);
         el.style.opacity = '.4'; 
       });
-      el.addEventListener('dragend', function() { el.style.opacity='1'; });
+      el.addEventListener('dragend', function(e) { el.style.opacity='1'; });
     el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
     el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
     el.addEventListener('drop', e => {
@@ -1735,6 +1806,7 @@ function completeTask(id, x, y) {
   pushAppHistory();
 
   if(task.completed) {
+    // Uncomplete: refund XP that was awarded
     if(task._xpAwarded) addXP(-task._xpAwarded, 'TASK REVERTED');
     task.completed = false; task.completedAt = null; task._xpAwarded = 0;
     window.save(); renderTasks(); return;
@@ -1762,6 +1834,7 @@ function completeTask(id, x, y) {
 
   addXP(xpAwarded, task.title, x, y);
 
+  // Handle repeat
   if(task.repeat === 'daily') {
     setTimeout(()=>{
       const clone = {...task, id:Date.now().toString(), completed:false, completedAt:null, _xpAwarded:0, createdAt:Date.now()};
@@ -1780,6 +1853,7 @@ function deleteTask(id) {
   window.save(); renderTasks();
 }
 
+// Task Modal
 window.openNewTaskModal = function() {
   $('task-modal-title').innerText = 'INJECT DIRECTIVE';
   $('task-modal-id').value = '';
@@ -1829,6 +1903,7 @@ window.saveTaskModal = function() {
   toast('DIRECTIVE SAVED', 'blue');
 }
 
+// Command input
 $('cmd-input').addEventListener('keydown', function(e) {
   if(e.key==='Enter' && e.target.value.trim()) {
     const task = parseTask(e.target.value.trim());
@@ -1838,6 +1913,7 @@ $('cmd-input').addEventListener('keydown', function(e) {
   }
 });
 
+// Filters
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active-filter','btn-blue'));
@@ -1869,6 +1945,7 @@ document.querySelectorAll('.cat-filter-btn').forEach(btn => {
   });
 });
 
+// Style for active filter buttons
 document.head.insertAdjacentHTML('beforeend',`<style>.active-filter,.active-sort{border-color:var(--blue)!important;color:var(--blue)!important}</style>`);
 
 // ═══════════════════════════════════════════════
@@ -1885,7 +1962,14 @@ window.applyDopamineTax = function() {
 function checkDetoxStreak() {
   const today = dateKey(new Date());
   if(S.detox_last_checkin === today) return;
+  if(S.detox_last_checkin) {
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if(S.detox_last_checkin === dateKey(yesterday)) {
+      // maintained streak, handled manually via tax button
+    }
+  }
   S.detox_last_checkin = today;
+  // Increment only if no tax applied today (simple heuristic — no penalty recorded)
   window.save();
 }
 
@@ -2024,15 +2108,20 @@ function renderWorkoutHistory() {
 
 function updatePhysStats() {
   $('phys-session-count').innerText = S.workout_log.length;
+  // Simple streak calc
   const days = new Set(S.workout_log.map(l=>dateKey(new Date(l.date))));
   let streak=0, d=new Date();
   while(days.has(dateKey(d))){ streak++; d.setDate(d.getDate()-1); }
   $('phys-streak').innerText = streak;
 }
 
+// Flashcards module removed
+
 // ═══════════════════════════════════════════════
 // SYLLABUS
 // ═══════════════════════════════════════════════
+let activeSubjectId=null;
+
 window.renderSyllabus = function() {
   const list=$('subject-list'); if(!list) return;
   list.innerHTML='';
@@ -2063,7 +2152,7 @@ window.addSubject = function() {
 }
 
 window.selectSubject = function(id) {
-  window.activeSubjectId=id;
+  activeSubjectId=id;
   const subj=S.neural.subjects.find(s=>s.id===id);
   $('syllabus-idle').style.display='none';
   $('syllabus-detail').style.display='flex';
@@ -2072,7 +2161,7 @@ window.selectSubject = function(id) {
 }
 
 window.renderTopics = function() {
-  const subj=S.neural.subjects.find(s=>s.id===window.activeSubjectId); if(!subj) return;
+  const subj=S.neural.subjects.find(s=>s.id===activeSubjectId); if(!subj) return;
   const done=subj.topics.filter(t=>t.status==='Done').length;
   const total=subj.topics.length;
   const pct=total?Math.floor((done/total)*100):0;
@@ -2110,15 +2199,15 @@ window.renderTopics = function() {
   }
 
   window.addTopic = function() {
-    const name=$('new-topic-name').value.trim(); if(!name||!window.activeSubjectId) return;
+    const name=$('new-topic-name').value.trim(); if(!name||!activeSubjectId) return;
     pushAppHistory();
-    const subj=S.neural.subjects.find(function(s) { return s.id===window.activeSubjectId; });
+    const subj=S.neural.subjects.find(function(s) { return s.id===activeSubjectId; });
     subj.topics.push({id:'t_'+Date.now(),name,status:'Not Started'});
     window.save(); window.renderTopics(); $('new-topic-name').value='';
   }
 
   window.deleteTopic = function(id) {
-      const subj=S.neural.subjects.find(function(s) { return s.id===window.activeSubjectId; }); if(!subj) return;
+      const subj=S.neural.subjects.find(function(s) { return s.id===activeSubjectId; }); if(!subj) return;
       pushAppHistory();
       subj.topics=subj.topics.filter(function(t) { return t.id!==id; });
       window.save(); window.renderTopics();
@@ -2152,10 +2241,12 @@ window.renderMeditation = function() {
       <div class="mono" style="font-size:10px;color:var(--tm);margin-top:2px">${log.duration} min · ${'★'.repeat(log.quality||0)}${'☆'.repeat(5-(log.quality||0))}${log.notes?' · '+log.notes:''}</div>
     </div>`;
   });
+  // Stats
   const now=new Date();
   const weekStart=new Date(now); weekStart.setDate(now.getDate()-7);
   const weekTotal=S.neural.meditation_log.filter(l=>l.date>=weekStart.getTime()).reduce((a,l)=>a+l.duration,0);
   $('med-weekly').innerText=weekTotal+' min';
+  // Streak
   let streak=0, d=new Date();
   const medDays=new Set(S.neural.meditation_log.map(l=>dateKey(new Date(l.date))));
   while(medDays.has(dateKey(d))){ streak++; d.setDate(d.getDate()-1); }
@@ -2205,12 +2296,14 @@ function renderMatrix() {
   if($('weight-input')) $('weight-input').value = S.profile.currentWeight || 48.4;
   if($('set-avatar-url')) $('set-avatar-url').value = S.profile.avatarUrl || '';
 
+  // Stats
     const done=S.tasks.filter(t=>t.completed).length;
     const total=S.tasks.length;
     $('stat-completion').innerHTML=`${total?Math.floor((done/total)*100):0}<span style="font-size:14px">%</span>`;
     $('stat-tasks').innerText=done;
     $('stat-workouts').innerText=S.workout_log.length;
 
+    // Pentagon
   const cats={Logic:0,Strength:0,Focus:0,Discipline:0,Grind:0};
   const maxC={Logic:.1,Strength:.1,Focus:.1,Discipline:.1,Grind:.1};
   S.tasks.forEach(t=>{
@@ -2241,6 +2334,7 @@ function renderMatrix() {
   const poly=$('radar-poly');
   if(poly) poly.setAttribute('points',[pt(0,vals[0]),pt(72,vals[1]),pt(144,vals[2]),pt(216,vals[3]),pt(288,vals[4])].join(' '));
 
+  // Attribute bars
   const attrBars=$('attr-bars');
   const attrData=[
     {name:'LOGIC',val:vals[0],color:'var(--blue)'},
@@ -2259,113 +2353,427 @@ function renderMatrix() {
     </div>
   `).join('');
 
-  const heatGrid=$('heatmap-grid'); if(!heatGrid) return;
-  heatGrid.innerHTML='';
-  const COLS=12, ROWS=7;
-  const startDate=new Date(); startDate.setDate(startDate.getDate()-(COLS*ROWS-1));
-  const allVals=Object.values(S.heatmap);
-  const maxXP=allVals.length?Math.max(...allVals,1):1;
+  // Heatmap — real data
+    const heatGrid=$('heatmap-grid'); if(!heatGrid) return;
+    heatGrid.innerHTML='';
+    const COLS=12, ROWS=7;
+  
+    const todayDate=new Date();
+    todayDate.setHours(0,0,0,0);
+    const currentDay=todayDate.getDay();
+    const gridEndDate=new Date(todayDate);
+    gridEndDate.setDate(todayDate.getDate()+(6-currentDay));
+  
+    const startDate=new Date(gridEndDate);
+    startDate.setDate(gridEndDate.getDate()-(COLS*ROWS-1));
 
-  for(let col=0;col<COLS;col++){
-    const colDiv=document.createElement('div');
-    colDiv.style.cssText='display:flex;flex-direction:column;gap:3px';
-    for(let row=0;row<ROWS;row++){
-      const d=new Date(startDate); d.setDate(d.getDate()+(col*ROWS+row));
-      const key=dateKey(d); const xpVal=S.heatmap[key]||0;
-      const intensity=xpVal/maxXP;
-      let bg;
-      if(!xpVal) bg='var(--border)';
-      else if(intensity<.25) bg='rgba(57,211,83,.2)';
-      else if(intensity<.5) bg='rgba(57,211,83,.45)';
-      else if(intensity<.75) bg='rgba(57,211,83,.7)';
-      else bg='var(--green)';
-      const cell=document.createElement('div');
-      cell.className='hm-cell';
-      cell.style.background=bg;
-      cell.title=`${key}: ${xpVal} XP`;
-      cell.addEventListener('mouseover',()=>$('heatmap-tooltip').innerText=`${key} — ${xpVal} XP`);
-      cell.addEventListener('mouseout',()=>$('heatmap-tooltip').innerText='');
-      colDiv.appendChild(cell);
+    const allVals=Object.values(S.heatmap);
+    const maxXP=allVals.length?Math.max(...allVals,1):1;
+
+    const labelDiv=document.createElement('div');
+    labelDiv.style.cssText='display:flex;flex-direction:column;gap:3px;margin-right:2px';
+    ['S','M','T','W','T','F','S'].forEach(day=>{
+      const dEl=document.createElement('div');
+      dEl.className='mono';
+      dEl.style.cssText='font-size:8px;color:var(--td);height:10px;line-height:10px;text-align:right';
+      dEl.innerText=day;
+      labelDiv.appendChild(dEl);
+    });
+    heatGrid.appendChild(labelDiv);
+
+    for(let col=0;col<COLS;col++){
+      const colDiv=document.createElement('div');
+      colDiv.style.cssText='display:flex;flex-direction:column;gap:3px';
+      for(let row=0;row<ROWS;row++){
+        const d=new Date(startDate); d.setDate(d.getDate()+(col*ROWS+row));
+        const key=dateKey(d); 
+        const isFuture=d>todayDate;
+        const xpVal=isFuture?0:(S.heatmap[key]||0);
+      
+        const intensity=xpVal/maxXP;
+        let bg;
+        if(!xpVal) bg='var(--border)';
+        else if(intensity<.25) bg='rgba(57,211,83,.2)';
+        else if(intensity<.5) bg='rgba(57,211,83,.45)';
+        else if(intensity<.75) bg='rgba(57,211,83,.7)';
+        else bg='var(--green)';
+      
+        const cell=document.createElement('div');
+        cell.className='hm-cell';
+        cell.style.background=bg;
+        if(isFuture) cell.style.opacity='0.15';
+      
+        const tooltipText=isFuture?'FUTURE':`${key} — ${xpVal} XP`;
+        cell.title=tooltipText;
+        cell.addEventListener('mouseover',()=>$('heatmap-tooltip').innerText=tooltipText);
+        cell.addEventListener('mouseout',()=>$('heatmap-tooltip').innerText='');
+        colDiv.appendChild(cell);
+      }
+      heatGrid.appendChild(colDiv);
     }
-    heatGrid.appendChild(colDiv);
-  }
 }
 
-function dismissBoot() {
-  const boot = $('boot');
-  if (!boot) return;
-  boot.style.opacity = '0';
-  boot.style.transition = 'opacity .3s';
-  setTimeout(() => { if (boot && boot.parentNode) boot.parentNode.removeChild(boot); }, 350);
+// ═══════════════════════════════════════════════
+// BUDGET TRACKER
+// ═══════════════════════════════════════════════
+
+window.checkBudgetPerson = function() {
+    const val = $('budget-item').value.toLowerCase();
+    const personDiv = $('budget-person-container');
+    if(!personDiv) return;
+    if (val === 'given to' || val === 'taken from') {
+        personDiv.style.display = 'flex';
+    } else {
+        personDiv.style.display = 'none';
+    }
 }
 
+window.addBudgetEntry = function() {
+    const inputStr = $('budget-item').value.trim();
+    if(!inputStr) { if(typeof toast === 'function') toast('ERR: Input required','red'); return; }
+
+    const parts = inputStr.split(/\s+/);
+    let amount = 0;
+    let mode = 'Online';
+    let category = 'Miscellaneous';
+    let person = '';
+    let remainingParts = [];
+
+    parts.forEach(p => {
+        const num = parseFloat(p);
+        if(!isNaN(num)) amount = num;
+        else if(p.toLowerCase() === 'cash') mode = 'Cash';
+        else if(p.toLowerCase() === 'online') mode = 'Online';
+        else remainingParts.push(p);
+    });
+
+    const catMap = {
+            'v': 'Vegetable', 'vegetable': 'Vegetable',
+            'fr': 'Fruit', 'fruit': 'Fruit', 'f': 'Fruit', 'fruit banana': 'Fruit',
+            'm': 'Milk', 'milk': 'Milk',
+            'g': 'Gas', 'gas': 'Gas',
+            'ff': 'Fast food', 'fast food': 'Fast food',
+            'r': 'Food ration', 'food ration': 'Food ration',
+            'gt': 'Given to', 'given to': 'Given to',
+            'tf': 'Taken from', 'taken from': 'Taken from'
+        };
+
+    let item = '';
+        var catIndex = -1;
+        for(var ci = 0; ci < remainingParts.length; ci++) {
+            if(catMap[remainingParts[ci].toLowerCase()]) { catIndex = ci; break; }
+        }
+        if(catIndex !== -1) {
+            category = catMap[remainingParts[catIndex].toLowerCase()];
+            var otherParts = remainingParts.filter(function(_,i){ return i !== catIndex; });
+            if(category === 'Given to' || category === 'Taken from') {
+                person = otherParts.join(' ') || 'Unknown';
+            } else {
+                item = otherParts.join(' ');
+            }
+        } else if (remainingParts.length > 0) {
+            category = remainingParts.join(' ');
+        }
+    
+        if(amount <= 0) { if(typeof toast === 'function') toast('ERR: Enter valid amount','red'); return; }
+
+        pushAppHistory();
+        if(!S.budget) S.budget = [];
+        S.budget.push({ id: 'b_' + Date.now(), date: Date.now(), category, amount, mode, person, item });
+    
+    window.save();
+    window.renderBudget();
+    
+    $('budget-item').value = '';
+    if(typeof toast === 'function') toast(`RECORDED: ${category} ${amount} (${mode})`, 'green');
+}
+
+window.renderBudget = function() {
+    const list = $('budget-list');
+    if(!list) return;
+    list.innerHTML = '';
+    
+    let total = 0;
+    let onlineTotal = 0;
+    let cashTotal = 0;
+    const entries = [...(S.budget||[])].reverse();
+    
+    if(entries.length === 0) {
+        list.innerHTML = '<div class="mono" style="color:var(--td);font-size:11px;padding:8px 4px">› no transactions recorded.</div>';
+        if($('budget-total')) { $('budget-total').innerText = '₹0'; $('budget-total').style.color = 'var(--tp)'; }
+        if($('budget-online')) { $('budget-online').innerText = '₹0'; $('budget-online').style.color = 'var(--tp)'; }
+        if($('budget-cash')) { $('budget-cash').innerText = '₹0'; $('budget-cash').style.color = 'var(--tp)'; }
+        return;
+    }
+    
+    entries.forEach(b => {
+        const d = new Date(b.date);
+        let title = b.category;
+        if(b.person) title += ` (${b.person})`;
+        
+        let amountText = '';
+        let color = 'var(--tp)';
+        if(b.category.toLowerCase() === 'taken from') {
+            amountText = `+₹${b.amount}`;
+            color = 'var(--green)';
+            total += b.amount;
+            if(b.mode === 'Online') onlineTotal += b.amount;
+            else cashTotal += b.amount;
+        } else {
+            amountText = `-₹${b.amount}`;
+            color = 'var(--red)';
+            total -= b.amount;
+            if(b.mode === 'Online') onlineTotal -= b.amount;
+            else cashTotal -= b.amount;
+        }
+        
+        list.innerHTML += `
+                    <div class="card anim-slide-up" style="padding:10px 14px; display:flex; justify-content:space-between; align-items:center; border-left:2px solid ${color}; margin-bottom:6px">
+                        <div style="display:flex; flex-direction:column; gap:4px;">
+                            <span style="font-weight:600; font-size:12px; color:var(--tp)">${b.item ? b.item : (b.person ? b.person : b.category)}</span>
+                            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                                <span class="mono" style="font-size:9px; color:var(--td)">${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}</span>
+                                <span style="color:var(--td);font-size:9px">·</span>
+                                <span class="mono" style="font-size:9px; color:var(--tm)">${b.category}</span>
+                                <span style="color:var(--td);font-size:9px">·</span>
+                                <span class="mono" style="font-size:9px; color:${b.mode==='Cash'?'var(--amber)':'var(--blue)'}">${b.mode.toUpperCase()}</span>
+                            </div>
+                        </div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="mono" style="font-weight:700; font-size:14px; color:${color}">${amountText}</span>
+                    <button class="btn" style="padding:4px 6px; font-size:10px; color:var(--td); background:transparent" onclick="window.deleteBudget('${b.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+    });
+    
+    if($('budget-total')) {
+        $('budget-total').innerText = (total < 0 ? '-₹' : '₹') + Math.abs(total);
+        $('budget-total').style.color = total >= 0 ? 'var(--green)' : 'var(--red)';
+    }
+    if($('budget-online')) {
+        $('budget-online').innerText = (onlineTotal < 0 ? '-₹' : '₹') + Math.abs(onlineTotal);
+        $('budget-online').style.color = onlineTotal >= 0 ? 'var(--green)' : 'var(--red)';
+    }
+    if($('budget-cash')) {
+        $('budget-cash').innerText = (cashTotal < 0 ? '-₹' : '₹') + Math.abs(cashTotal);
+        $('budget-cash').style.color = cashTotal >= 0 ? 'var(--green)' : 'var(--red)';
+    }
+}
+
+window.switchBudgetTab = function(tab) {
+    var ledger = document.getElementById('budget-ledger-panel');
+    var stats  = document.getElementById('budget-stats-panel');
+    var tLedger = document.getElementById('btab-ledger');
+    var tStats  = document.getElementById('btab-stats');
+    if(tab === 'ledger') {
+        ledger.style.display = 'flex'; stats.style.display = 'none';
+        tLedger.style.color = 'var(--amber)'; tLedger.style.background = 'rgba(227,179,65,0.08)';
+        tStats.style.color  = ''; tStats.style.background = '';
+    } else {
+        ledger.style.display = 'none'; stats.style.display = 'block';
+        tStats.style.color  = 'var(--amber)'; tStats.style.background = 'rgba(227,179,65,0.08)';
+        tLedger.style.color = ''; tLedger.style.background = '';
+        window.renderBudgetStats('monthly');
+    }
+}
+
+window.switchBudgetStat = function(mode) {
+    var mBtn = document.getElementById('bstat-monthly');
+    var dBtn = document.getElementById('bstat-daily');
+    if(mode === 'monthly') {
+        mBtn.style.color = 'var(--blue)'; mBtn.style.background = 'rgba(92,157,255,0.08)';
+        dBtn.style.color = ''; dBtn.style.background = '';
+    } else {
+        dBtn.style.color = 'var(--blue)'; dBtn.style.background = 'rgba(92,157,255,0.08)';
+        mBtn.style.color = ''; mBtn.style.background = '';
+    }
+    window.renderBudgetStats(mode);
+}
+
+window.renderBudgetStats = function(mode) {
+    var container = document.getElementById('budget-stats-content');
+    if(!container) return;
+    container.innerHTML = '';
+    var entries = S.budget || [];
+    var now = new Date();
+    var MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+    if(mode === 'monthly') {
+        // build last 6 months
+        var months = [];
+        for(var mi = 5; mi >= 0; mi--) {
+            var d = new Date(now.getFullYear(), now.getMonth() - mi, 1);
+            months.push({ year: d.getFullYear(), month: d.getMonth(), label: MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear() });
+        }
+        months.forEach(function(m) {
+            var mEntries = entries.filter(function(b) {
+                var bd = new Date(b.date);
+                return bd.getFullYear() === m.year && bd.getMonth() === m.month && b.category.toLowerCase() !== 'taken from';
+            });
+            if(mEntries.length === 0) return;
+            // category totals
+            var catTotals = {};
+            var grandTotal = 0;
+            mEntries.forEach(function(b) {
+                catTotals[b.category] = (catTotals[b.category] || 0) + b.amount;
+                grandTotal += b.amount;
+            });
+            var html = '<div style="margin-bottom:14px">';
+            html += '<div class="mono" style="font-size:10px;color:var(--blue);letter-spacing:.08em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.06)">' + m.label + '</div>';
+            Object.keys(catTotals).forEach(function(cat) {
+                var pct = Math.round((catTotals[cat] / grandTotal) * 100);
+                html += '<div style="margin-bottom:7px">';
+                html += '<div style="display:flex;justify-content:space-between;margin-bottom:3px">';
+                html += '<span class="mono" style="font-size:10px;color:var(--tm)">' + cat.toUpperCase() + '</span>';
+                html += '<span class="mono" style="font-size:10px;color:var(--tp)">₹' + catTotals[cat] + ' <span style="color:var(--td)">(' + pct + '%)</span></span>';
+                html += '</div>';
+                html += '<div style="height:2px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:100%;width:' + pct + '%;background:var(--amber);border-radius:2px;transition:width .4s ease"></div></div>';
+                html += '</div>';
+            });
+            html += '<div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06)">';
+            html += '<span class="mono" style="font-size:10px;color:var(--td)">TOTAL</span>';
+            html += '<span class="mono" style="font-size:11px;font-weight:700;color:var(--red)">-₹' + grandTotal + '</span>';
+            html += '</div></div>';
+            container.innerHTML += html;
+        });
+        if(container.innerHTML === '') container.innerHTML = '<div class="mono" style="color:var(--td);font-size:11px;padding:8px 4px">› no data for past 6 months.</div>';
+
+    } else {
+        // daily — last 30 days
+        var days = [];
+        for(var di = 29; di >= 0; di--) {
+            var dd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - di);
+            days.push({ year: dd.getFullYear(), month: dd.getMonth(), day: dd.getDate() });
+        }
+        days.forEach(function(dy) {
+            var dEntries = entries.filter(function(b) {
+                var bd = new Date(b.date);
+                return bd.getFullYear() === dy.year && bd.getMonth() === dy.month && bd.getDate() === dy.day && b.category.toLowerCase() !== 'taken from';
+            });
+            if(dEntries.length === 0) return;
+            var catTotals = {};
+            var grandTotal = 0;
+            dEntries.forEach(function(b) {
+                catTotals[b.category] = (catTotals[b.category] || 0) + b.amount;
+                grandTotal += b.amount;
+            });
+            var dayLabel = dy.day + ' ' + MONTH_NAMES[dy.month];
+            var html = '<div style="margin-bottom:14px">';
+            html += '<div class="mono" style="font-size:10px;color:var(--teal);letter-spacing:.08em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.06)">' + dayLabel + '</div>';
+            Object.keys(catTotals).forEach(function(cat) {
+                var pct = Math.round((catTotals[cat] / grandTotal) * 100);
+                html += '<div style="margin-bottom:7px">';
+                html += '<div style="display:flex;justify-content:space-between;margin-bottom:3px">';
+                html += '<span class="mono" style="font-size:10px;color:var(--tm)">' + cat.toUpperCase() + '</span>';
+                html += '<span class="mono" style="font-size:10px;color:var(--tp)">₹' + catTotals[cat] + ' <span style="color:var(--td)">(' + pct + '%)</span></span>';
+                html += '</div>';
+                html += '<div style="height:2px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:100%;width:' + pct + '%;background:var(--teal);border-radius:2px;transition:width .4s ease"></div></div>';
+                html += '</div>';
+            });
+            html += '<div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06)">';
+            html += '<span class="mono" style="font-size:10px;color:var(--td)">TOTAL</span>';
+            html += '<span class="mono" style="font-size:11px;font-weight:700;color:var(--red)">-₹' + grandTotal + '</span>';
+            html += '</div></div>';
+            container.innerHTML += html;
+        });
+        if(container.innerHTML === '') container.innerHTML = '<div class="mono" style="color:var(--td);font-size:11px;padding:8px 4px">› no transactions in last 30 days.</div>';
+    }
+}
+
+window.budgetSelectCat = function(cat) {
+    var inp = $('budget-item');
+    if(!inp) return;
+    var cur = inp.value.trim();
+    // if a cat abbreviation already exists replace it, otherwise append
+    var parts = cur.split(/\s+/).filter(Boolean);
+    var catKeys = ['v','fr','f','m','g','ff','r','gt','tf','vegetable','fruit','milk','gas','fast food','food ration','given to','taken from'];
+    var filtered = parts.filter(function(p){ return catKeys.indexOf(p.toLowerCase()) === -1; });
+    filtered.push(cat);
+    inp.value = filtered.join(' ');
+    inp.focus();
+    // highlight active button
+    document.querySelectorAll('[onclick^="window.budgetSelectCat"]').forEach(function(b){ b.style.color='var(--tm)'; b.style.background=''; });
+    event.target.style.color = 'var(--amber)';
+    event.target.style.background = 'rgba(227,179,65,0.08)';
+}
+
+window.deleteBudget = function(id) {
+    if(typeof pushAppHistory === 'function') pushAppHistory();
+    S.budget = S.budget.filter(b => b.id !== id);
+    if(typeof window.save === 'function') window.save();
+    window.renderBudget();
+    if(typeof toast === 'function') toast('TRANSACTION DELETED', 'red');
+}
+
+// ═══════════════════════════════════════════════
+// BOOT SEQUENCE
+// ═══════════════════════════════════════════════
 function runBoot() {
-  const lines = ['CONNECTING...', 'SYNCED'];
-  const container = $('boot-lines');
-  if (!container) { dismissBoot(); return; }
-  let i = 0;
-  // Hard fallback: always dismiss boot after 2.5s no matter what
-  const hardTimeout = setTimeout(dismissBoot, 2500);
-  const iv = setInterval(() => {
-    if (i < lines.length) {
-      const el = document.createElement('div');
-      el.style.fontSize = '11px';
-      el.style.letterSpacing = '0.08em';
-      el.innerHTML = `<span style="color:var(--blue)">›</span> ${lines[i]}`;
+  const lines=[
+    'CONNECTING...',
+    'SYNCED'
+  ];
+  const container=$('boot-lines');
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i<lines.length){
+      const el=document.createElement('div');
+      el.style.fontSize='11px';
+      el.style.letterSpacing='0.08em';
+      el.innerHTML=`<span style="color:var(--blue)">›</span> ${lines[i]}`;
       container.appendChild(el);
       i++;
     } else {
       clearInterval(iv);
-      clearTimeout(hardTimeout);
-      dismissBoot();
+      const boot=$('boot');
+      boot.style.opacity='0';
+      boot.style.transition='opacity .3s';
+      setTimeout(()=>boot.remove(),300);
     }
-  }, 200);
+  },200);
 }
 
-function initApp() {
-  try { updateHeader(); } catch(e) { console.error('updateHeader', e); }
-  try { updateClock(); } catch(e) { console.error('updateClock', e); }
-  try { renderTasks(); } catch(e) { console.error('renderTasks', e); }
-  try { renderExercises(); } catch(e) { console.error('renderExercises', e); }
-  try { renderTimeline(); } catch(e) { console.error('renderTimeline', e); }
-
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+window.onload = () => {
+  updateHeader();
+  updateClock();
+  renderTasks();
+  renderExercises();
+  
+  // Hardcode dropdown default initialization to Semester 2
   if ($('syl-sem-select')) {
     $('syl-sem-select').value = "2";
   }
-
-  try { window.filterSyllabusBySem(); } catch(e) { console.error('filterSyllabus', e); }
-  try { window.renderMeditation(); } catch(e) { console.error('renderMeditation', e); }
-
-  const medTab = document.querySelector('.neural-tab[data-neural="neural-meditation"]');
+  
+  window.filterSyllabusBySem();
+    window.renderMeditation();
+  
+    if (typeof window.renderBudget === 'function') window.renderBudget();
+  
+    // Initialize default active neural panel view states cleanly
+    const medTab = document.querySelector('.neural-tab[data-neural=\"neural-meditation\"]');
   if (medTab) {
     medTab.click();
   } else {
     ['neural-syllabus','neural-meditation'].forEach(id => { if ($(id)) $(id).style.display='none'; });
     if ($('neural-meditation')) $('neural-meditation').style.display='flex';
   }
-
-  try { updateDetoxUI(); } catch(e) {}
-  try { updateSortButtons(); } catch(e) {}
-
-  const savedFilter = document.querySelector(`.filter-btn[data-filter="${S.taskFilter}"]`);
-  if (savedFilter) { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter')); savedFilter.classList.add('active-filter'); }
-  const savedCat = document.querySelector(`.cat-filter-btn[data-cat="${S.taskCatFilter}"]`);
-  document.querySelectorAll('.cat-filter-btn').forEach(b => b.style.opacity='0.5');
-  if (savedCat) savedCat.style.opacity = '1';
-
-  try { checkDetoxStreak(); } catch(e) {}
-
-  // Sync from Firebase (non-blocking — app already rendered from localStorage)
-  try { window.syncFromFirebase(); } catch(e) { console.error('syncFromFirebase', e); }
-
+  
+  updateDetoxUI();
+  updateSortButtons();
+  // Init filter state from saved
+  const savedFilter=document.querySelector(`.filter-btn[data-filter="${S.taskFilter}"]`);
+  if(savedFilter){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active-filter')); savedFilter.classList.add('active-filter'); }
+  const savedCat=document.querySelector(`.cat-filter-btn[data-cat="${S.taskCatFilter}"]`);
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.style.opacity='0.5');
+  if(savedCat) savedCat.style.opacity='1';
+  checkDetoxStreak();
+  window.syncFromFirebase();
   setTimeout(runBoot, 100);
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp();
-}
+};
 </script>
 </body>
 </html>
