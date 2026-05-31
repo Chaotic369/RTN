@@ -178,6 +178,139 @@ textarea{resize:none}
   <div id="boot-lines" style="opacity:0.8"></div>
 </div>
 
+<!-- ENERGY PICKER MODAL -->
+<div id="energy-modal" class="overlay" onclick="if(event.target===this)window.closeModal('energy-modal')">
+  <div class="modal" style="width:320px">
+    <h2>ENERGY LEVEL — RIGHT NOW</h2>
+    <input type="hidden" id="energy-is-floor" value="0">
+    <div style="font-size:11px;color:var(--tm);margin-bottom:14px">Tap your current state. This data builds your peak-performance map over time.</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn" style="text-align:left;padding:9px 14px;font-size:12px;color:var(--red)" onclick="window.commitEnergyAndStart(1)">① Empty — running on fumes</button>
+      <button class="btn" style="text-align:left;padding:9px 14px;font-size:12px;color:var(--amber)" onclick="window.commitEnergyAndStart(2)">② Low — can function, barely</button>
+      <button class="btn" style="text-align:left;padding:9px 14px;font-size:12px;color:var(--tm)" onclick="window.commitEnergyAndStart(3)">③ Average — normal capacity</button>
+      <button class="btn" style="text-align:left;padding:9px 14px;font-size:12px;color:var(--blue)" onclick="window.commitEnergyAndStart(4)">④ Sharp — focused and clear</button>
+      <button class="btn" style="text-align:left;padding:9px 14px;font-size:12px;color:var(--green)" onclick="window.commitEnergyAndStart(5)">⑤ Peak — locked in, flow state</button>
+    </div>
+    <button class="btn" style="margin-top:10px;width:100%;color:var(--td)" onclick="window.closeModal('energy-modal')">CANCEL</button>
+  </div>
+</div>
+
+<!-- MORNING INTENTION MODAL -->
+<div id="morning-modal" class="overlay" onclick="if(event.target===this)window.closeModal('morning-modal')">
+  <div class="modal" style="width:400px">
+    <h2>MORNING INTENTION — <span id="morning-date-label"></span></h2>
+    <div style="font-size:11px;color:var(--td);margin-bottom:16px">Three things. What must get done today no matter what?</div>
+    <div class="label mb-1">① Priority one</div>
+    <input type="text" id="mi-p1" class="w-full mb-3" placeholder="The most important thing today">
+    <div class="label mb-1">② Priority two</div>
+    <input type="text" id="mi-p2" class="w-full mb-3" placeholder="">
+    <div class="label mb-1">③ Priority three</div>
+    <input type="text" id="mi-p3" class="w-full mb-4" placeholder="">
+    <div class="label mb-1">MUST NOT FAIL (copy one from above exactly)</div>
+    <input type="text" id="mi-critical" class="w-full mb-4" placeholder="The one that cannot slip">
+    <div class="flex gap-2 justify-end">
+      <button class="btn" onclick="window.closeModal('morning-modal')">CANCEL</button>
+      <button class="btn btn-blue" onclick="window.saveMorningIntention()">LOCK INTENTIONS +5 XP</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY REVIEW MODAL -->
+<div id="weekly-review-modal" class="overlay" onclick="if(event.target===this)window.closeModal('weekly-review-modal')">
+  <div class="modal" style="width:440px">
+    <h2>WEEKLY REVIEW — 5 MINUTES</h2>
+    <div style="font-size:11px;color:var(--td);margin-bottom:16px">Close the learning loop. +20 XP for completing.</div>
+    <div class="label mb-1">① What pattern did I notice this week — avoidance, timing, energy?</div>
+    <textarea id="wr-q1" class="w-full mb-4" rows="3" placeholder="Look at your avoidance log and fail log. What kept showing up?"></textarea>
+    <div class="label mb-1">② What did I actually do well — evidence of growth?</div>
+    <textarea id="wr-q2" class="w-full mb-4" rows="3" placeholder="Name specific moments. These become your identity evidence."></textarea>
+    <div class="label mb-1">③ One structural change for next week — something different, not harder</div>
+    <textarea id="wr-q3" class="w-full mb-4" rows="2" placeholder="e.g. Move LOGIC tasks to 08:00–10:00 only. No GRIND after 20:00."></textarea>
+    <div class="flex gap-2 justify-end">
+      <button class="btn" onclick="window.closeModal('weekly-review-modal')">CANCEL</button>
+      <button class="btn btn-green" onclick="window.saveWeeklyReview()">SAVE REVIEW +20 XP</button>
+    </div>
+  </div>
+</div>
+
+<!-- SLEEP LOG MODAL -->
+<div id="sleep-modal" class="overlay" onclick="if(event.target===this)window.closeModal('sleep-modal')">
+  <div class="modal" style="width:340px">
+    <h2>SLEEP LOG</h2>
+    <div style="font-size:11px;color:var(--td);margin-bottom:14px">Last night's data. Builds your energy-performance correlation over time.</div>
+    <div class="flex gap-3 mb-4">
+      <div style="flex:1">
+        <div class="label mb-1">HOURS SLEPT</div>
+        <input type="number" id="sleep-hours" class="w-full" step="0.5" min="1" max="12" placeholder="7.5">
+      </div>
+      <div style="flex:1">
+        <div class="label mb-1">QUALITY (1–5)</div>
+        <input type="number" id="sleep-quality" class="w-full" min="1" max="5" value="3">
+      </div>
+    </div>
+    <div class="label mb-1">NOTES (optional)</div>
+    <input type="text" id="sleep-notes" class="w-full mb-4" placeholder="e.g. woke up twice, vivid dreams">
+    <div class="flex gap-2 justify-end">
+      <button class="btn" onclick="window.closeModal('sleep-modal')">CANCEL</button>
+      <button class="btn btn-teal" onclick="window.saveSleepLog()">LOG +5 XP</button>
+    </div>
+  </div>
+</div>
+
+<!-- AVOIDANCE MODAL -->
+<div id="avoid-modal" class="overlay" onclick="if(event.target===this)window.closeModal('avoid-modal')">
+  <div class="modal" style="width:360px">
+    <h2>AVOIDANCE LOGGED</h2>
+    <input type="hidden" id="avoid-task-id">
+    <div style="font-size:12px;color:var(--tm);margin-bottom:14px">Task: <span id="avoid-task-title" style="color:var(--tp);font-weight:600"></span></div>
+    <div class="label mb-2">WHY ARE YOU NOT STARTING?</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--red)" onclick="window.logAvoidance('Fear / resistance')"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px"></i>Fear / resistance — task feels threatening</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--amber)" onclick="window.logAvoidance('Unclear next action')"><i class="fa-solid fa-question" style="margin-right:6px"></i>Unclear next action — don't know what to do</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--blue)" onclick="window.logAvoidance('Low energy / fatigue')"><i class="fa-solid fa-battery-half" style="margin-right:6px"></i>Low energy / fatigue — tank is empty</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--purple)" onclick="window.logAvoidance('Distraction / pull')"><i class="fa-solid fa-bolt" style="margin-right:6px"></i>Distraction / pull — something else grabbed me</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--teal)" onclick="window.logAvoidance('Environment / setup')"><i class="fa-solid fa-gears" style="margin-right:6px"></i>Environment / setup — conditions aren't right</button>
+    </div>
+    <button class="btn" style="margin-top:12px;width:100%;color:var(--td)" onclick="window.closeModal('avoid-modal')">CANCEL</button>
+  </div>
+</div>
+
+<!-- FAIL ROOT CAUSE MODAL -->
+<div id="fail-root-modal" class="overlay" onclick="if(event.target===this)window.closeModal('fail-root-modal')">
+  <div class="modal" style="width:360px">
+    <h2>ROOT CAUSE ANALYSIS</h2>
+    <input type="hidden" id="fail-root-taskid">
+    <div style="font-size:12px;color:var(--tm);margin-bottom:14px">Failed: <span id="fail-root-title" style="color:var(--red);font-weight:600"></span></div>
+    <div class="label mb-2">WHAT ACTUALLY CAUSED THE FAILURE?</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--red)" onclick="window.logFailReason('Fear / overwhelm')"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px"></i>Fear / overwhelm — couldn't push through</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--amber)" onclick="window.logFailReason('Task was too vague')"><i class="fa-solid fa-question" style="margin-right:6px"></i>Task was too vague — didn't know how to start</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--blue)" onclick="window.logFailReason('Low energy / state')"><i class="fa-solid fa-battery-half" style="margin-right:6px"></i>Low energy / state — wrong time or no sleep</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--purple)" onclick="window.logFailReason('External distraction')"><i class="fa-solid fa-bolt" style="margin-right:6px"></i>External distraction — interrupted / noise</button>
+      <button class="btn" style="text-align:left;padding:8px 12px;font-size:11px;color:var(--teal)" onclick="window.logFailReason('Bad environment')"><i class="fa-solid fa-gears" style="margin-right:6px"></i>Bad environment — wrong place / missing tools</button>
+    </div>
+    <button class="btn" style="margin-top:12px;width:100%;color:var(--td)" onclick="window.closeModal('fail-root-modal')">SKIP</button>
+  </div>
+</div>
+
+<!-- NIGHTLY DEBRIEF MODAL -->
+<div id="debrief-modal" class="overlay" onclick="if(event.target===this)window.closeModal('debrief-modal')">
+  <div class="modal" style="width:420px">
+    <h2>NIGHTLY DEBRIEF — 2 MINUTES</h2>
+    <div style="font-size:11px;color:var(--td);margin-bottom:16px">Honest answers only. +10 XP for completing.</div>
+    <div class="label mb-1">① What did I avoid today — and why?</div>
+    <textarea id="debrief-q1" class="w-full mb-4" rows="2" placeholder="Be specific. Name the task and the real reason."></textarea>
+    <div class="label mb-1">② What excuse did I tell myself to justify it?</div>
+    <textarea id="debrief-q2" class="w-full mb-4" rows="2" placeholder="The story you ran. Naming it defuses it."></textarea>
+    <div class="label mb-1">③ One specific commitment for tomorrow — action + time</div>
+    <textarea id="debrief-q3" class="w-full mb-4" rows="2" placeholder="e.g. I will solve 3 LeetCode problems at 08:00."></textarea>
+    <div class="flex gap-2 justify-end">
+      <button class="btn" onclick="window.closeModal('debrief-modal')">CANCEL</button>
+      <button class="btn btn-purple" onclick="window.saveDebrief()">COMMIT +10 XP</button>
+    </div>
+  </div>
+</div>
+
 <div id="levelup-flash">
   <div class="inner">
     <div style="font-size:48px;color:var(--amber)">▲</div>
@@ -307,7 +440,13 @@ textarea{resize:none}
       </div>
     </div>
     <div class="label mb-1">NOTES</div>
-        <textarea id="tm-notes" class="w-full mb-4" rows="2" placeholder=""></textarea>
+        <textarea id="tm-notes" class="w-full mb-3" rows="2" placeholder=""></textarea>
+        <div class="label mb-1">MINIMUM ACTION (FLOOR)</div>
+        <input type="text" id="tm-floor" class="w-full mb-3" placeholder="e.g. open IDE for 2 min">
+        <div class="label mb-1">PURPOSE CHAIN (→ goal link)</div>
+        <input type="text" id="tm-purpose" class="w-full mb-3" placeholder="e.g. builds DSA fluency → needed for quant interviews">
+        <div class="label mb-1">IF/THEN (implementation intention)</div>
+        <input type="text" id="tm-ifthen" class="w-full mb-4" placeholder="e.g. When I sit down at 08:00 and feel resistance, I will open IDE and read one line">
         <div class="flex gap-2 justify-end">
       <button class="btn" onclick="window.closeModal('task-modal')">CANCEL</button>
       <button class="btn btn-blue" onclick="window.saveTaskModal()">COMPUTATE</button>
@@ -359,6 +498,9 @@ textarea{resize:none}
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px">
                   <button id="btn-undo-app" class="btn" style="padding:3px 8px;font-size:10px" title="Undo Last Action"><i class="fa-solid fa-rotate-left"></i></button>
+                  <button class="btn btn-blue" style="padding:3px 8px;font-size:10px" title="Morning Intention" onclick="window.openMorningIntention()"><i class="fa-solid fa-sun"></i></button>
+                  <button class="btn btn-purple" style="padding:3px 8px;font-size:10px" title="Nightly Debrief" onclick="window.openDebrief()"><i class="fa-solid fa-moon"></i></button>
+                  <button class="btn btn-teal" style="padding:3px 8px;font-size:10px" title="Log Sleep" onclick="window.openSleepLog()"><i class="fa-solid fa-bed"></i></button>
                 </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
@@ -394,6 +536,14 @@ textarea{resize:none}
                       <button class="btn btn-blue" style="padding:3px 10px;font-size:10px;background:rgba(92,157,255,0.05)" onclick="window.openNewTaskModal()"><i class="fa-solid fa-plus" style="font-size:9px"></i> NEW</button>
                     </div>
 
+    <div class="card" style="padding:8px 12px;flex-shrink:0;background:rgba(92,157,255,0.03);cursor:pointer" onclick="window.openMorningIntention()">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <span class="mono" style="font-size:9px;color:var(--blue);letter-spacing:.1em">TODAY'S INTENTIONS</span>
+        <i class="fa-solid fa-sun" style="font-size:9px;color:var(--amber)"></i>
+      </div>
+      <div id="morning-banner" style="display:flex;flex-wrap:wrap;align-items:center"></div>
+    </div>
+
         <div id="active-task-panel" class="card" style="display:none;padding:16px;flex-shrink:0;align-items:center;gap:18px;background:rgba(255,255,255,0.015);">
           <div style="position:relative;width:68px;height:68px;flex-shrink:0">
             <svg width="68" height="68" viewBox="0 0 100 100" style="transform:rotate(-90deg)">
@@ -404,7 +554,8 @@ textarea{resize:none}
           </div>
           <div style="flex:1;min-width:0">
             <div class="mono" id="at-status" style="font-size:10px;color:var(--blue);letter-spacing:0.1em;margin-bottom:3px;font-weight:700">ACTIVE DIRECTIVE</div>
-            <div id="at-title" style="font-weight:700;font-size:15px;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px">Task Title</div>
+            <div id="at-title" style="font-weight:700;font-size:15px;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px">Task Title</div>
+            <div id="at-ifthen" style="font-size:10px;color:var(--purple);font-style:italic;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
               <button class="btn btn-green" style="padding:4px 8px;font-size:9px" onclick="window.activeTaskComplete()"><i class="fa-solid fa-check"></i> DONE</button>
               <button class="btn btn-amber" style="padding:4px 8px;font-size:9px;background:rgba(227,179,65,0.08)" onclick="window.activeTaskAddMin()">+1 MIN</button>
@@ -456,6 +607,17 @@ textarea{resize:none}
                                   </div>
                                 </div>
                       </div>
+                    </div>
+
+                    <div class="card" style="padding:10px 12px;flex-shrink:0;background:rgba(57,211,83,0.03)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <span class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--green)">WIN LOG</span>
+                      </div>
+                      <div class="card" style="display:flex;align-items:center;gap:8px;padding:5px 8px;margin-bottom:6px;background:rgba(255,255,255,0.02)">
+                        <span style="color:var(--green);font-size:13px">▲</span>
+                        <input id="win-input" type="text" style="flex:1;background:transparent!important;border:none!important;font-size:11px;color:var(--tp);padding:0;font-family:inherit" placeholder="Name one thing you did that your old self wouldn't..." onkeydown="if(event.key==='Enter')window.addWin()">
+                      </div>
+                      <div id="win-log-list"></div>
                     </div>
 
                     <div class="card" style="flex:1;display:flex;flex-direction:column;padding:12px;overflow:hidden;background:rgba(255,255,255,0.01)">
@@ -664,6 +826,39 @@ textarea{resize:none}
               </div>
             </div>
           </div>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0">
+    <div class="card" id="matrix-debt" style="flex:1;min-width:200px;padding:12px;border-left:2px solid var(--red)">
+      <div class="label">DISCIPLINE DEBT</div>
+      <div style="font-size:11px;color:var(--td);margin-top:4px">Loading...</div>
+    </div>
+    <div class="card" id="matrix-avoidance" style="flex:2;min-width:240px;padding:12px;border-left:2px solid var(--amber)">
+      <div class="label">AVOIDANCE PATTERNS</div>
+      <div style="font-size:11px;color:var(--td);margin-top:4px">Loading...</div>
+    </div>
+    <div class="card" style="flex:1;min-width:160px;padding:12px;border-left:2px solid var(--purple);display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div class="label">NIGHTLY DEBRIEF</div>
+        <div id="matrix-debrief-count" style="font-size:11px;color:var(--td);margin-top:4px">0 debriefs logged</div>
+        <div id="debrief-history-list" style="margin-top:6px;max-height:120px;overflow-y:auto"></div>
+      </div>
+      <button class="btn btn-purple" style="margin-top:10px;padding:5px 10px;font-size:10px;width:100%" onclick="window.openDebrief()">▶ DEBRIEF NOW</button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0">
+    <div class="card" id="matrix-sleep" style="flex:2;min-width:260px;padding:12px;border-left:2px solid var(--teal)">
+      <div class="label">SLEEP LOG</div>
+      <div style="font-size:11px;color:var(--td);margin-top:4px">No sleep data yet. <button class="btn btn-teal" style="padding:2px 6px;font-size:9px;display:inline" onclick="window.openSleepLog()">LOG TONIGHT</button></div>
+    </div>
+    <div class="card" style="flex:1;min-width:160px;padding:12px;border-left:2px solid var(--green);display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div class="label">WEEKLY REVIEW</div>
+        <div id="matrix-weekly-count" style="font-size:11px;color:var(--td);margin-top:4px">0 reviews logged</div>
+      </div>
+      <button class="btn btn-green" style="margin-top:10px;padding:5px 10px;font-size:10px;width:100%" onclick="window.openWeeklyReview()">▶ REVIEW WEEK</button>
+    </div>
+  </div>
         </div>
 
         <div id="view-budget" class="view" style="flex-direction:column; gap:12px; overflow-y:auto">
@@ -804,7 +999,15 @@ const DEFAULT = {
   detox_last_checkin: null,
   taskSortMode: 'time',
   taskFilter: 'all',
-  taskCatFilter: ''
+  taskCatFilter: '',
+  avoidance_log: [],
+  fail_log: [],
+  discipline_debt: 0,
+  debrief_log: [],
+  morning_intentions: [],
+  win_log: [],
+  weekly_reviews: [],
+  sleep_log: []
 };
 
 let S = JSON.parse(JSON.stringify(DEFAULT));
@@ -849,6 +1052,14 @@ if(!S.neural.meditation_log) S.neural.meditation_log = [];
 if(!S.taskSortMode) S.taskSortMode = 'time';
 if(!S.taskFilter) S.taskFilter = 'all';
                         if(!S.taskCatFilter) S.taskCatFilter = '';
+                        if(!S.avoidance_log) S.avoidance_log = [];
+                        if(!S.fail_log) S.fail_log = [];
+                        if(S.discipline_debt === undefined) S.discipline_debt = 0;
+                        if(!S.debrief_log) S.debrief_log = [];
+                        if(!S.morning_intentions) S.morning_intentions = [];
+                        if(!S.win_log) S.win_log = [];
+                        if(!S.weekly_reviews) S.weekly_reviews = [];
+                        if(!S.sleep_log) S.sleep_log = [];
                         if(!S.tasks) S.tasks = [];
                         if(S.activeTask === undefined) S.activeTask = null;
                         if(!S.notes) S.notes = [];
@@ -895,6 +1106,14 @@ window.syncFromFirebase = function() {
                         if(!S.taskFilter) S.taskFilter = 'all';
                                                 if(!S.taskCatFilter) S.taskCatFilter = '';
                                                 if(!S.tasks) S.tasks = [];
+                                                if(!S.avoidance_log) S.avoidance_log = [];
+                                                if(!S.fail_log) S.fail_log = [];
+                                                if(S.discipline_debt === undefined) S.discipline_debt = 0;
+                                                if(!S.debrief_log) S.debrief_log = [];
+                                                if(!S.morning_intentions) S.morning_intentions = [];
+                                                if(!S.win_log) S.win_log = [];
+                                                if(!S.weekly_reviews) S.weekly_reviews = [];
+                                                if(!S.sleep_log) S.sleep_log = [];
                                                                                                 if(!S.notes) S.notes = [];
                                                                                                 if(!S.folders) S.folders = [];
                                                                                                 if(!S.budget) S.budget = [];
@@ -1614,17 +1833,23 @@ function renderTasks() {
         <div class="task-check ${task.completed?'checked':''} ${task.failed?'failed':''}" data-id="${task.id}">${task.completed?'<i class="fa-solid fa-check" style="font-size:8px;color:#0b0b0b"></i>':(task.failed?'<i class="fa-solid fa-xmark" style="font-size:8px;color:var(--red)"></i>':'')}</div>
         <div style="flex:1;min-width:0">
           <div style="font-weight:600;color:${task.completed?'var(--td)':(task.failed?'var(--red)':'var(--tp)')};${(task.completed||task.failed)?'text-decoration:line-through':''}; white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${task.title}</div>
+          ${task.purpose && !task.completed && !task.failed ? `<div style="font-size:10px;color:var(--td);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic">→ ${task.purpose}</div>` : ''}
           <div style="display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap">
             ${task.category?`<span class="pill ${catClass}">${task.category}</span>`:''}
             ${task.priority!=='normal'?`<span class="pill" style="color:${task.priority==='critical'?'var(--red)':'var(--amber)'};background:${task.priority==='critical'?'rgba(248,81,73,.08)':'rgba(227,179,65,.08)'};border-color:${task.priority==='critical'?'rgba(248,81,73,.3)':'rgba(227,179,65,.3)'}">!${task.priority.toUpperCase()}</span>`:''}
             ${task.repeat?`<span class="pill" style="color:var(--teal);background:rgba(45,212,191,.08);border-color:rgba(45,212,191,.3)"><i class="fa-solid fa-rotate" style="font-size:7px"></i> ${task.repeat}</span>`:''}
+            ${task.floor && !task.completed && !task.failed ? `<span class="pill" style="color:var(--purple);background:rgba(188,140,255,.08);border-color:rgba(188,140,255,.3)" title="Floor: ${task.floor}"><i class="fa-solid fa-shoe-prints" style="font-size:7px"></i> FLOOR</span>` : ''}
             ${timeHtml}
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
           <span class="mono" style="font-size:11px;color:${(task.completed||task.failed)?'var(--td)':'var(--blue)'}">${task.xp} XP</span>
           <i class="fa-solid fa-grip-vertical drag-handle"></i>
-          ${(!task.completed && !task.failed) ? `<button class="task-play-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--green);padding:2px 4px;font-size:11px" title="Start Timer"><i class="fa-solid fa-play"></i></button>` : ''}
+          ${(!task.completed && !task.failed) ? `
+            <button class="task-floor-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--purple);padding:2px 4px;font-size:11px;display:${task.floor?'inline':'none'}" title="Floor Mode (2min)"><i class="fa-solid fa-bolt-lightning"></i></button>
+            <button class="task-avoid-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--td);padding:2px 4px;font-size:11px" title="Log Avoidance"><i class="fa-solid fa-eye-slash"></i></button>
+            <button class="task-play-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--green);padding:2px 4px;font-size:11px" title="Start Timer"><i class="fa-solid fa-play"></i></button>
+          ` : ''}
           <button class="task-edit-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--td);padding:2px 4px;font-size:11px" title="Edit"><i class="fa-solid fa-pen"></i></button>
           <button class="task-del-btn" data-id="${task.id}" style="background:transparent;border:none;color:var(--td);padding:2px 4px;font-size:11px" title="Delete"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1642,6 +1867,8 @@ function renderTasks() {
       });
     });
     list.querySelectorAll('.task-play-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); window.startTaskTimer(e.currentTarget.dataset.id); }));
+    list.querySelectorAll('.task-avoid-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); window.openAvoidModal(e.currentTarget.dataset.id); }));
+    list.querySelectorAll('.task-floor-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); window.startFloorMode(e.currentTarget.dataset.id); }));
     list.querySelectorAll('.task-edit-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); window.openEditTaskModal(e.currentTarget.dataset.id); }));
     list.querySelectorAll('.task-del-btn').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); deleteTask(e.currentTarget.dataset.id); }));
 
@@ -1734,6 +1961,9 @@ window.openNewTaskModal = function() {
   $('task-modal-id').value = '';
   $('tm-title').value=''; $('tm-time').value=''; $('tm-duration').value='25'; $('tm-xp').value='25';
   $('tm-cat').value=''; $('tm-prio').value='normal'; $('tm-repeat').value=''; $('tm-notes').value='';
+  if($('tm-floor')) $('tm-floor').value='';
+  if($('tm-purpose')) $('tm-purpose').value='';
+  if($('tm-ifthen')) $('tm-ifthen').value='';
   window.openModal('task-modal');
 }
 
@@ -1750,6 +1980,9 @@ window.openEditTaskModal = function(id) {
   $('tm-prio').value = task.priority || 'normal';
   $('tm-repeat').value = task.repeat || '';
   $('tm-notes').value = task.notes || '';
+  if($('tm-floor')) $('tm-floor').value = task.floor || '';
+  if($('tm-purpose')) $('tm-purpose').value = task.purpose || '';
+  if($('tm-ifthen')) $('tm-ifthen').value = task.ifThen || '';
   window.openModal('task-modal');
 }
 
@@ -1768,7 +2001,10 @@ window.saveTaskModal = function() {
       category: $('tm-cat').value||null,
       priority: $('tm-prio').value||'normal',
       repeat: $('tm-repeat').value||null,
-      notes: $('tm-notes').value||''
+      notes: $('tm-notes').value||'',
+      floor: ($('tm-floor')?$('tm-floor').value:'') || '',
+      purpose: ($('tm-purpose')?$('tm-purpose').value:'') || '',
+      ifThen: ($('tm-ifthen')?$('tm-ifthen').value:'') || ''
     };
     if(id) {
       var idx = S.tasks.findIndex(t=>t.id===id);
@@ -1829,12 +2065,30 @@ window.startTaskTimer = function(id) {
   var task = S.tasks.find(function(t) { return t.id === id; });
   if(!task) return;
   if(task.completed || task.failed) { toast('Task already resolved','amber'); return; }
-  
+  window._pendingTimerTaskId = id;
+  window.openEnergyPicker(false);
+};
+
+window.openEnergyPicker = function(isFloor) {
+  $('energy-modal').classList.add('open');
+  $('energy-is-floor').value = isFloor ? '1' : '0';
+};
+
+window.commitEnergyAndStart = function(level) {
+  window.closeModal('energy-modal');
+  var id = window._pendingTimerTaskId;
+  var task = S.tasks.find(function(t){ return t.id === id; });
+  if(!task) return;
   if(typeof pushAppHistory === 'function') pushAppHistory();
-  S.activeTask = { id: id, isTimeline: false, startTime: Date.now(), addedMins: 0, expectedDuration: task.duration || 25 };
+  // Log energy reading
+  if(!S.energy_log) S.energy_log = [];
+  S.energy_log.push({ taskId: id, category: task.category || '', level: level, timestamp: Date.now(), hour: new Date().getHours() });
+  var isFloor = $('energy-is-floor').value === '1';
+  S.activeTask = { id: id, isTimeline: false, startTime: Date.now(), addedMins: 0, expectedDuration: isFloor ? 2 : (task.duration || 25) };
   if(typeof window.save === 'function') window.save();
   window.renderActiveTask();
-  toast('PROTOCOL INITIATED', 'blue');
+  if(isFloor) toast('FLOOR MODE: ' + (task.floor || 'minimum action'), 'purple');
+  else toast('PROTOCOL INITIATED', 'blue');
 };
 
 window.startTimelineTimer = function(id, dur) {
@@ -1862,6 +2116,12 @@ window.renderActiveTask = function() {
   
   panel.style.display = 'flex';
   document.getElementById('at-title').innerText = source.title || source.label;
+  var ifThenEl = document.getElementById('at-ifthen');
+  if(ifThenEl) {
+    var ifThenText = source.ifThen || '';
+    ifThenEl.innerText = ifThenText ? '💡 ' + ifThenText : '';
+    ifThenEl.style.display = ifThenText ? 'block' : 'none';
+  }
   
   if(activeTimerInterval) clearInterval(activeTimerInterval);
   activeTimerInterval = setInterval(window.tickActiveTask, 1000);
@@ -1951,22 +2211,51 @@ window.activeTaskComplete = function() {
 
 window.activeTaskFail = function() {
    if(!S.activeTask) return;
-   if(!S.activeTask.isTimeline) {
-       var task = S.tasks.find(function(t) { return t.id === S.activeTask.id; });
+   var failedId = S.activeTask.id;
+   var isTimeline = S.activeTask.isTimeline;
+   var source = isTimeline ? S.timeline.find(function(t){return t.id===failedId;}) : S.tasks.find(function(t){return t.id===failedId;});
+   var titleStr = source ? (source.title || source.label) : 'TASK';
+   var isCritical = source && source.priority === 'critical';
+
+   if(!isTimeline) {
+       var task = S.tasks.find(function(t) { return t.id === failedId; });
        if(task) {
          if(typeof pushAppHistory === 'function') pushAppHistory();
          task.failed = true;
          task.completedAt = Date.now();
-         toast('DIRECTIVE FAILED', 'red');
+         if(isCritical) {
+           S.discipline_debt = (S.discipline_debt || 0) + 1;
+         }
        }
    } else {
-       toast('DPS PROTOCOL FAILED', 'red');
+       if(isCritical) S.discipline_debt = (S.discipline_debt || 0) + 1;
    }
    S.activeTask = null;
    if(typeof window.save === 'function') window.save();
    window.renderActiveTask();
    if(typeof renderTimeline === 'function') renderTimeline();
    if(typeof renderTasks === 'function') renderTasks();
+
+   // Show root-cause picker
+   window.openFailModal(failedId, titleStr);
+};
+
+window.openFailModal = function(taskId, titleStr) {
+  var modal = $('fail-root-modal');
+  if(!modal) return;
+  $('fail-root-title').innerText = titleStr || 'TASK';
+  $('fail-root-taskid').value = taskId || '';
+  modal.classList.add('open');
+};
+
+window.logFailReason = function(reason) {
+  var taskId = $('fail-root-taskid').value;
+  var title = $('fail-root-title').innerText;
+  if(!S.fail_log) S.fail_log = [];
+  S.fail_log.push({ taskId, title, reason, timestamp: Date.now() });
+  if(typeof window.save === 'function') window.save();
+  window.closeModal('fail-root-modal');
+  toast('FAILURE LOGGED: ' + reason, 'red');
 };
 
 window.activeTaskSkip = function() {
@@ -1976,6 +2265,36 @@ window.activeTaskSkip = function() {
    if(typeof window.save === 'function') window.save();
    window.renderActiveTask();
    toast('DIRECTIVE SKIPPED', 'amber');
+};
+
+// ═══ AVOIDANCE SYSTEM ═══
+window.openAvoidModal = function(taskId) {
+  var task = S.tasks.find(function(t){ return t.id === taskId; });
+  if(!task) return;
+  $('avoid-task-id').value = taskId;
+  $('avoid-task-title').innerText = task.title;
+  $('avoid-modal').classList.add('open');
+};
+
+window.logAvoidance = function(reason) {
+  var taskId = $('avoid-task-id').value;
+  var task = S.tasks.find(function(t){ return t.id === taskId; });
+  if(!task) { window.closeModal('avoid-modal'); return; }
+  if(!S.avoidance_log) S.avoidance_log = [];
+  S.avoidance_log.push({ taskId, title: task.title, category: task.category || '', reason, timestamp: Date.now() });
+  if(task.priority === 'critical') S.discipline_debt = (S.discipline_debt || 0) + 1;
+  if(typeof window.save === 'function') window.save();
+  window.closeModal('avoid-modal');
+  toast('AVOIDANCE LOGGED — pattern recorded', 'amber');
+};
+
+// ═══ FLOOR MODE ═══
+window.startFloorMode = function(taskId) {
+  var task = S.tasks.find(function(t){ return t.id === taskId; });
+  if(!task || task.completed || task.failed) return;
+  if(!task.floor) { toast('No floor action set — edit task first', 'amber'); return; }
+  window._pendingTimerTaskId = taskId;
+  window.openEnergyPicker(true);
 };
 
 window.activeTaskAddMin = function() {
@@ -1999,6 +2318,228 @@ window.applyDopamineTax = function() {
   S.detox_last_tax_date = dateKey(new Date());
   S.tasks.push({id:Date.now().toString(),title:'TAX: 40 Push-Ups or 20min Blank Editor',xp:0,time:null,category:'DISCIPLINE',priority:'critical',repeat:null,completed:false,completedAt:null,createdAt:Date.now(),notes:'Pay the price.',_xpAwarded:0});
   window.save(); renderTasks(); updateDetoxUI();
+}
+
+// ═══ DISCIPLINE DEBT ═══
+window.clearDebt = function() {
+  if(!S.discipline_debt || S.discipline_debt <= 0) { toast('NO DEBT TO CLEAR', 'blue'); return; }
+  pushAppHistory();
+  var taskTitle = 'DEBT CLEARANCE: ' + S.discipline_debt + ' critical task(s) — 25 push-ups each OR 20min deep work per debt';
+  S.tasks.push({id:Date.now().toString(), title:taskTitle, xp:S.discipline_debt*30, time:null, category:'DISCIPLINE', priority:'critical', repeat:null, completed:false, completedAt:null, createdAt:Date.now(), notes:'Clear your discipline debt.', _xpAwarded:0});
+  S.discipline_debt = 0;
+  window.save(); renderTasks(); toast('DEBT TASK INJECTED', 'amber');
+};
+
+// ═══ NIGHTLY DEBRIEF ═══
+window.openDebrief = function() {
+  $('debrief-q1').value = '';
+  $('debrief-q2').value = '';
+  $('debrief-q3').value = '';
+  $('debrief-modal').classList.add('open');
+};
+
+window.saveDebrief = function() {
+  var q1 = $('debrief-q1').value.trim();
+  var q2 = $('debrief-q2').value.trim();
+  var q3 = $('debrief-q3').value.trim();
+  if(!q1 && !q2 && !q3) { window.closeModal('debrief-modal'); return; }
+  if(!S.debrief_log) S.debrief_log = [];
+  S.debrief_log.push({ date: Date.now(), avoided: q1, excuse: q2, commitment: q3 });
+  addXP(10, 'NIGHTLY DEBRIEF');
+  window.save();
+  renderDebriefHistory();
+  window.closeModal('debrief-modal');
+  toast('+10 XP — DEBRIEF LOGGED', 'purple');
+};
+
+function renderDebriefHistory() {
+  var countEl = $('matrix-debrief-count');
+  if(countEl) countEl.innerText = ((S.debrief_log || []).length) + ' debriefs logged';
+  var histEl = $('debrief-history-list');
+  if(!histEl) return;
+  histEl.innerHTML = '';
+  var logs = S.debrief_log || [];
+  if(!logs.length) { histEl.innerHTML = '<div style="font-size:10px;color:var(--td);margin-top:6px">No debriefs yet.</div>'; return; }
+  [...logs].reverse().slice(0,10).forEach(function(entry){
+    var d = new Date(entry.date);
+    var ds = (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    histEl.innerHTML += `<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <div class="mono" style="font-size:9px;color:var(--purple);margin-bottom:4px">${ds}</div>
+      ${entry.avoided?`<div style="font-size:10px;color:var(--tm);margin-bottom:2px"><span style="color:var(--td)">avoided: </span>${entry.avoided}</div>`:''}
+      ${entry.excuse?`<div style="font-size:10px;color:var(--tm);margin-bottom:2px"><span style="color:var(--td)">root cause: </span>${entry.excuse}</div>`:''}
+      ${entry.commitment?`<div style="font-size:10px;color:var(--tp)"><span style="color:var(--td)">commitment: </span>${entry.commitment}</div>`:''}
+    </div>`;
+  });
+}
+
+// ═══ MORNING INTENTION ═══
+window.openMorningIntention = function() {
+  var today = dateKey(new Date());
+  var existing = (S.morning_intentions || []).find(function(m){ return m.date === today; });
+  $('mi-p1').value = existing ? existing.p1 : '';
+  $('mi-p2').value = existing ? existing.p2 : '';
+  $('mi-p3').value = existing ? existing.p3 : '';
+  $('mi-critical').value = existing ? existing.critical : '';
+  $('morning-modal').classList.add('open');
+};
+
+window.saveMorningIntention = function() {
+  var p1=$('mi-p1').value.trim(), p2=$('mi-p2').value.trim(), p3=$('mi-p3').value.trim(), critical=$('mi-critical').value.trim();
+  if(!p1 && !p2 && !p3) { window.closeModal('morning-modal'); return; }
+  if(!S.morning_intentions) S.morning_intentions = [];
+  var today = dateKey(new Date());
+  var idx = S.morning_intentions.findIndex(function(m){ return m.date === today; });
+  var entry = { date: today, p1, p2, p3, critical, timestamp: Date.now() };
+  if(idx >= 0) S.morning_intentions[idx] = entry; else S.morning_intentions.push(entry);
+  addXP(5, 'MORNING INTENTION SET');
+  window.save();
+  window.closeModal('morning-modal');
+  renderMorningBanner();
+  toast('+5 XP — INTENTIONS LOCKED', 'blue');
+};
+
+function renderMorningBanner() {
+  var el = $('morning-banner');
+  if(!el) return;
+  var today = dateKey(new Date());
+  var m = (S.morning_intentions || []).find(function(x){ return x.date === today; });
+  if(!m || (!m.p1 && !m.p2 && !m.p3)) {
+    el.innerHTML = `<span style="font-size:10px;color:var(--td);cursor:pointer" onclick="window.openMorningIntention()">› Set today's intentions — what must get done?</span>`;
+    return;
+  }
+  if(!m.completed) m.completed = {};
+  var items = [m.p1, m.p2, m.p3].filter(Boolean);
+  el.innerHTML = items.map(function(t,i){
+    var done = !!m.completed[i];
+    var isCrit = m.critical === t;
+    return `<span style="display:inline-flex;align-items:center;gap:5px;margin-right:12px;cursor:pointer;opacity:${done?0.45:1}" onclick="window.toggleIntentionItem(${i})" title="Mark done">
+      <span style="width:13px;height:13px;border:1px solid ${done?'var(--green)':isCrit?'var(--amber)':'rgba(255,255,255,0.2)'};border-radius:2px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:${done?'var(--green)':'transparent'}">
+        ${done?'<i class="fa-solid fa-check" style="font-size:7px;color:#0b0b0b"></i>':''}
+      </span>
+      <span style="font-size:10px;color:${done?'var(--td)':isCrit?'var(--amber)':'var(--tm)'};${done?'text-decoration:line-through':''}">
+        ${i===0?'①':i===1?'②':'③'} ${t}${isCrit?' ★':''}
+      </span>
+    </span>`;
+  }).join('') + `<span style="font-size:9px;color:var(--td);cursor:pointer;margin-left:4px" onclick="window.openMorningIntention()">edit</span>`;
+}
+
+window.toggleIntentionItem = function(idx) {
+  var today = dateKey(new Date());
+  var m = (S.morning_intentions || []).find(function(x){ return x.date === today; });
+  if(!m) return;
+  if(!m.completed) m.completed = {};
+  m.completed[idx] = !m.completed[idx];
+  if(typeof window.save === 'function') window.save();
+  renderMorningBanner();
+};
+
+// ═══ WIN LOG ═══
+window.addWin = function() {
+  var inp = $('win-input');
+  var text = inp ? inp.value.trim() : '';
+  if(!text) return;
+  if(!S.win_log) S.win_log = [];
+  S.win_log.push({ text, timestamp: Date.now() });
+  inp.value = '';
+  addXP(5, 'WIN LOGGED');
+  window.save();
+  renderWinLog();
+  toast('+5 XP — WIN CAPTURED', 'green');
+};
+
+function renderWinLog() {
+  var el = $('win-log-list'); if(!el) return;
+  el.innerHTML = '';
+  var wins = [...(S.win_log||[])].reverse();
+  if(!wins.length) { el.innerHTML = '<div style="font-size:10px;color:var(--td)">No wins logged yet. Start small.</div>'; return; }
+  var today = dateKey(new Date());
+  var todayWins = wins.filter(function(w){ return dateKey(new Date(w.timestamp)) === today; });
+  var olderWins = wins.filter(function(w){ return dateKey(new Date(w.timestamp)) !== today; });
+  if(todayWins.length) {
+    el.innerHTML += `<div class="mono" style="font-size:9px;color:var(--green);letter-spacing:0.06em;margin-bottom:4px">TODAY</div>`;
+    todayWins.forEach(function(w) {
+      el.innerHTML += `<div style="display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+        <span style="color:var(--green);font-size:11px;flex-shrink:0">▲</span>
+        <span style="font-size:11px;color:var(--tm);flex:1;line-height:1.4">${w.text}</span>
+      </div>`;
+    });
+  }
+  if(olderWins.length) {
+    el.innerHTML += `<div class="mono" style="font-size:9px;color:var(--td);letter-spacing:0.06em;margin:6px 0 4px">PREVIOUS</div>`;
+    olderWins.slice(0,8).forEach(function(w) {
+      var d = new Date(w.timestamp);
+      var dateStr = (d.getMonth()+1)+'/'+d.getDate();
+      el.innerHTML += `<div style="display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+        <span style="color:var(--green);font-size:11px;flex-shrink:0">▲</span>
+        <span style="font-size:11px;color:var(--tm);flex:1;line-height:1.4">${w.text}</span>
+        <span class="mono" style="font-size:9px;color:var(--td);flex-shrink:0">${dateStr}</span>
+      </div>`;
+    });
+  }
+}
+
+// ═══ WEEKLY REVIEW ═══
+window.openWeeklyReview = function() {
+  $('wr-q1').value=''; $('wr-q2').value=''; $('wr-q3').value='';
+  $('weekly-review-modal').classList.add('open');
+};
+
+window.saveWeeklyReview = function() {
+  var q1=$('wr-q1').value.trim(), q2=$('wr-q2').value.trim(), q3=$('wr-q3').value.trim();
+  if(!q1&&!q2&&!q3){ window.closeModal('weekly-review-modal'); return; }
+  if(!S.weekly_reviews) S.weekly_reviews = [];
+  S.weekly_reviews.push({ date: Date.now(), patterns: q1, wins: q2, change: q3 });
+  addXP(20, 'WEEKLY REVIEW');
+  window.save();
+  window.closeModal('weekly-review-modal');
+  toast('+20 XP — WEEKLY REVIEW SAVED', 'blue');
+};
+
+// ═══ SLEEP LOG ═══
+window.openSleepLog = function() {
+  $('sleep-hours').value=''; $('sleep-quality').value='3'; $('sleep-notes').value='';
+  $('sleep-modal').classList.add('open');
+};
+
+window.saveSleepLog = function() {
+  var hours=parseFloat($('sleep-hours').value)||0, quality=parseInt($('sleep-quality').value)||3, notes=$('sleep-notes').value.trim();
+  if(!hours){ toast('Enter hours slept','red'); return; }
+  if(!S.sleep_log) S.sleep_log = [];
+  S.sleep_log.push({ date: Date.now(), dateKey: dateKey(new Date()), hours, quality, notes });
+  addXP(5, 'SLEEP LOGGED');
+  window.save();
+  window.closeModal('sleep-modal');
+  renderSleepInsight();
+  toast('+5 XP — SLEEP LOGGED', 'teal');
+};
+
+function renderSleepInsight() {
+  var el = $('matrix-sleep'); if(!el) return;
+  var logs = (S.sleep_log || []).slice(-14);
+  if(!logs.length){ el.innerHTML='<div class="label" style="margin-bottom:4px">SLEEP LOG</div><div style="font-size:11px;color:var(--td)">No sleep data yet. Log nightly for energy pattern insights.</div>'; return; }
+  var avgHours = (logs.reduce(function(a,l){return a+l.hours;},0)/logs.length).toFixed(1);
+  var avgQ = (logs.reduce(function(a,l){return a+l.quality;},0)/logs.length).toFixed(1);
+  var last = logs[logs.length-1];
+  var qColor = last.quality>=4?'var(--green)':last.quality>=3?'var(--amber)':'var(--red)';
+  var historyRows = [...logs].reverse().map(function(l){
+    var d = new Date(l.date);
+    var ds = (d.getMonth()+1)+'/'+d.getDate();
+    var qc = l.quality>=4?'var(--green)':l.quality>=3?'var(--amber)':'var(--red)';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <span class="mono" style="font-size:9px;color:var(--td);min-width:32px">${ds}</span>
+      <span class="mono" style="font-size:10px;color:var(--teal);min-width:30px">${l.hours}h</span>
+      <span style="font-size:10px;color:${qc}">${'★'.repeat(l.quality)}${'☆'.repeat(5-l.quality)}</span>
+      ${l.notes?`<span style="font-size:10px;color:var(--td);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.notes}</span>`:''}
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="label" style="margin-bottom:6px">SLEEP LOG <span style="color:var(--td);font-weight:400">(14-day avg)</span></div>
+    <div style="display:flex;gap:16px;margin-bottom:8px">
+      <div><div class="label">AVG HOURS</div><div class="mono" style="font-size:18px;font-weight:700;color:var(--teal)">${avgHours}h</div></div>
+      <div><div class="label">AVG QUALITY</div><div class="mono" style="font-size:18px;font-weight:700;color:${qColor}">${avgQ}/5</div></div>
+      <div><div class="label">LAST NIGHT</div><div class="mono" style="font-size:18px;font-weight:700;color:var(--tp)">${last.hours}h ${'★'.repeat(last.quality)}${'☆'.repeat(5-last.quality)}</div></div>
+    </div>
+    <div style="max-height:110px;overflow-y:auto;margin-bottom:8px">${historyRows}</div>
+    <button class="btn btn-teal" style="padding:3px 8px;font-size:9px" onclick="window.openSleepLog()">LOG TONIGHT</button>`;
 }
 
 function checkDetoxStreak() {
@@ -2357,6 +2898,35 @@ function renderMatrix() {
     $('stat-completion').innerHTML=`${total?Math.floor((done/total)*100):0}<span style="font-size:14px">%</span>`;
     $('stat-tasks').innerText=done;
     $('stat-workouts').innerText=S.workout_log.length;
+
+    // Discipline debt
+    var debtEl = $('matrix-debt');
+    if(debtEl) {
+      var debt = S.discipline_debt || 0;
+      debtEl.innerHTML = `<div class="label" style="margin-bottom:4px">DISCIPLINE DEBT</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="mono" style="font-size:22px;font-weight:700;color:${debt>0?'var(--red)':'var(--green)'}">${debt}</span>
+          <span style="font-size:10px;color:var(--td)">skipped critical tasks</span>
+          ${debt>0?`<button class="btn btn-amber" style="padding:3px 8px;font-size:9px" onclick="window.clearDebt()">CLEAR DEBT</button>`:''}
+        </div>`;
+    }
+
+    // Avoidance pattern summary
+    var avoidEl = $('matrix-avoidance');
+    if(avoidEl && S.avoidance_log && S.avoidance_log.length) {
+      var reasons = {};
+      S.avoidance_log.forEach(function(a){ reasons[a.reason] = (reasons[a.reason]||0)+1; });
+      var top = Object.entries(reasons).sort(function(a,b){return b[1]-a[1];}).slice(0,3);
+      avoidEl.innerHTML = `<div class="label" style="margin-bottom:6px">TOP AVOIDANCE PATTERNS</div>` +
+        top.map(function(r){ return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="mono" style="font-size:11px;color:var(--amber);min-width:18px;text-align:right">${r[1]}×</span><span style="font-size:11px;color:var(--tm)">${r[0]}</span></div>`; }).join('') +
+        `<div style="font-size:10px;color:var(--td);margin-top:4px">${S.avoidance_log.length} total avoidance events logged</div>`;
+    } else if(avoidEl) {
+      avoidEl.innerHTML = '<div class="label" style="margin-bottom:4px">AVOIDANCE PATTERNS</div><div style="font-size:11px;color:var(--td)">No avoidance events logged yet.</div>';
+    }
+    renderDebriefHistory();
+    var weeklyCount = $('matrix-weekly-count');
+    if(weeklyCount) weeklyCount.innerText = (S.weekly_reviews ? S.weekly_reviews.length : 0) + ' reviews logged';
+    renderSleepInsight();
 
     // Pentagon — DPS-driven
           const vals = computePentagonFromDPS();
@@ -3132,6 +3702,9 @@ window.onload = () => {
   document.querySelectorAll('.cat-filter-btn').forEach(b=>b.style.opacity='0.5');
   if(savedCat) savedCat.style.opacity='1';
   checkDetoxStreak();
+  renderMorningBanner();
+  renderWinLog();
+  renderDebriefHistory();
   window.syncFromFirebase();
   setTimeout(runBoot, 100);
 };
