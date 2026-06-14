@@ -984,10 +984,13 @@ document.getElementById('btn-undo-app').addEventListener('click', function() {
         if (typeof window.renderBudget === 'function') window.renderBudget();
                         if (S.timeline) S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
                 if (typeof renderTimeline === 'function') renderTimeline();
-                if (document.getElementById('view-matrix') && document.getElementById('view-matrix').classList.contains('active')) {
-          renderMatrix();
-        }
-    toast('ACTION UNDONE', 'amber');
+                                if (typeof renderMorningBanner === 'function') renderMorningBanner();
+                                if (typeof renderWinLog === 'function') renderWinLog();
+                                if (typeof renderDebriefHistory === 'function') renderDebriefHistory();
+                                if (document.getElementById('view-matrix') && document.getElementById('view-matrix').classList.contains('active')) {
+                          renderMatrix();
+                        }
+                    toast('ACTION UNDONE', 'amber');
   } else {
     toast('NOTHING TO UNDO', 'td');
   }
@@ -1081,11 +1084,14 @@ window.syncFromFirebase = function() {
             if (typeof updateDetoxUI === 'function') updateDetoxUI();
             if (typeof updateSortButtons === 'function') updateSortButtons();
                                     if (typeof window.renderBudget === 'function') window.renderBudget();
-                  var matrixView = document.getElementById('view-matrix');
-      if (matrixView && matrixView.classList.contains('active') && typeof renderMatrix === 'function') {
-        renderMatrix();
-      }
-      if (typeof toast === 'function') toast('CLOUD REALM SYNC COMPLETED', 'green');
+                                    if (typeof renderMorningBanner === 'function') renderMorningBanner();
+                                    if (typeof renderWinLog === 'function') renderWinLog();
+                                    if (typeof renderDebriefHistory === 'function') renderDebriefHistory();
+                              var matrixView = document.getElementById('view-matrix');
+                  if (matrixView && matrixView.classList.contains('active') && typeof renderMatrix === 'function') {
+                    renderMatrix();
+                  }
+                  if (typeof toast === 'function') toast('CLOUD REALM SYNC COMPLETED', 'green');
     } else {
       if (typeof toast === 'function') toast('NO SAVESTATE DETECTED. INITIALIZING...', 'amber');
       window.save();
