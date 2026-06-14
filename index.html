@@ -454,36 +454,7 @@ textarea{resize:none}
   </div>
 </div>
 
-        <div id="note-modal" class="overlay" onclick="if(event.target===this) window.closeModal('note-modal')">
-                          <div class="modal" style="width:500px; max-width:95vw; background:var(--surface); transition:background 0.3s, border 0.3s;">
-                            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:8px">
-                               <input type="text" id="nm-title" style="flex:1;background:transparent!important;border:none!important;font-family:'Product Sans','Google Sans',sans-serif;font-size:18px;font-weight:700;color:var(--tp);padding:0" placeholder="">
-                               <button class="btn" style="padding:4px 8px;font-size:12px;background:transparent;color:var(--td)" onclick="window.copyModalNote()" title="Copy Note"><i class="fa-regular fa-copy"></i></button>
-                               <button class="btn" id="nm-pin" style="padding:4px 8px;font-size:12px;background:transparent" onclick="window.toggleModalPin()"><i class="fa-solid fa-thumbtack"></i></button>
-                            </div>
-                            <textarea id="nm-text" style="width:100%;min-height:200px;background:transparent!important;border:none!important;color:var(--tp);font-size:13px;font-family:'Product Sans','Google Sans','Open Sans',sans-serif;line-height:1.5;resize:vertical;padding:0" placeholder=""></textarea>
-                                                <div id="nm-image-preview-container" style="display:none;position:relative;margin-top:8px">
-                                                    <img id="nm-image-preview" src="" style="width:100%;border-radius:4px;max-height:300px;object-fit:contain;background:rgba(0,0,0,0.2)">
-                                                    <button class="btn" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:white;padding:4px 8px;border-radius:4px;backdrop-filter:blur(4px)" onclick="window.removeNoteImage()"><i class="fa-solid fa-xmark"></i></button>
-                                                </div>
-                                                <input type="hidden" id="nm-id">
-            <input type="hidden" id="nm-color">
-            <input type="hidden" id="nm-border">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;border-top:1px solid rgba(255,255,255,0.05);padding-top:12px">
-              <div style="display:flex;gap:6px">
-                               <button class="btn" style="padding:4px 8px;font-size:11px;color:var(--td);background:transparent" onclick="window.cycleModalColor()"><i class="fa-solid fa-palette"></i></button>
-                               <button class="btn" style="padding:4px 8px;font-size:11px;color:var(--td);background:transparent" onclick="document.getElementById('nm-image-upload').click()"><i class="fa-solid fa-image"></i></button>
-                               <input type="file" id="nm-image-upload" accept="image/*" style="display:none" onchange="window.handleNoteImageUpload(event)">
-                               <input type="hidden" id="nm-image-data">
-                               <button class="btn" style="padding:4px 8px;font-size:11px;color:var(--td);background:transparent" onclick="window.deleteModalNote()"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-              <div style="display:flex;gap:8px">
-                 <button class="btn" onclick="window.closeModal('note-modal')">CANCEL</button>
-                 <button class="btn btn-amber" onclick="window.saveNoteModal()">SAVE NOTE</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        
 
         <nav style="height:44px;border:none !important;background:rgba(15, 15, 15, 0.7);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;z-index:10">
               <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:0">
@@ -620,21 +591,7 @@ textarea{resize:none}
                       <div id="win-log-list"></div>
                     </div>
 
-                    <div class="card" style="flex:1;display:flex;flex-direction:column;padding:12px;overflow:hidden;background:rgba(255,255,255,0.01)">
-                                          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-shrink:0">
-                                                                                      <div style="display:flex;align-items:center;gap:6px">
-                                                                                          <button id="btn-back-folder" class="btn" style="display:none;padding:2px 6px;font-size:9px" onclick="window.viewRootFolder()"><i class="fa-solid fa-arrow-left"></i></button>
-                                                                                          <div id="notes-view-title" class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--amber)">QUICK NOTES</div>
-                                                                                          <input id="notes-folder-edit" type="text" style="display:none;background:transparent!important;border:none!important;color:var(--amber);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;padding:0;width:120px" onchange="window.renameCurrentFolder(this.value)">
-                                                                                      </div>
-                                                                                      <button class="btn btn-amber" style="padding:3px 8px;font-size:9px;background:rgba(227,179,65,0.08)" onclick="window.createNewFolder()"><i class="fa-solid fa-folder-plus"></i> FOLDER</button>
-                                                                                    </div>
-                                          <div class="card" style="display:flex;align-items:center;gap:8px;padding:6px 10px;margin-bottom:8px;flex-shrink:0;background:rgba(255,255,255,0.02)">
-                                                                  <span class="mono" style="color:var(--amber);font-weight:700;font-size:14px">›</span>
-                                                                  <input id="quick-note-input" type="text" style="flex:1;background:transparent !important;border:none !important;border-width:0 !important;font-family:'Product Sans','Google Sans',sans-serif;font-size:12px;color:var(--tp);padding:0" placeholder="" autocomplete="off" onkeydown="if(event.key==='Enter')window.quickAddNote()">
-                                                                </div>
-                                          <div id="notes-container" style="flex:1;overflow-y:auto;column-count:2;column-gap:8px;padding-right:4px;display:block"></div>
-                                        </div>
+                    
 
                   </div>
                 </div>
@@ -955,9 +912,7 @@ const DEFAULT = {
   profile: { username:'OPERATIVE', level:1, xp:0, rank:'SLAVE', avatarUrl:'' },
     settings: { dailyXPGoal:500 },
   tasks: [],
-      notes: [],
-      folders: [],
-      budget: [],
+        budget: [],
     timeline: [
         {id:'t1',time:'07:00',label:'SYSTEM START — WAKE UP [DISCIPLINE]',color:'var(--amber)'},
         {id:'t2',time:'07:10',label:'MAINTENANCE: BATH / BRUSH [HEALTH]',color:'var(--teal)'},
@@ -1027,8 +982,7 @@ document.getElementById('btn-undo-app').addEventListener('click', function() {
     renderExercises();
             if (typeof window.renderMeditation === 'function') window.renderMeditation();
         if (typeof window.renderBudget === 'function') window.renderBudget();
-                if (typeof window.renderNotes === 'function') window.renderNotes();
-                if (S.timeline) S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
+                        if (S.timeline) S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
                 if (typeof renderTimeline === 'function') renderTimeline();
                 if (document.getElementById('view-matrix') && document.getElementById('view-matrix').classList.contains('active')) {
           renderMatrix();
@@ -1062,8 +1016,7 @@ if(!S.taskFilter) S.taskFilter = 'all';
                         if(!S.sleep_log) S.sleep_log = [];
                         if(!S.tasks) S.tasks = [];
                         if(S.activeTask === undefined) S.activeTask = null;
-                        if(!S.notes) S.notes = [];
-if(!S.budget) S.budget = [];
+                        if(!S.budget) S.budget = [];
 if(!S.workout_log) S.workout_log = [];
 if(!S.exercises) S.exercises = DEFAULT.exercises;
 
@@ -1114,9 +1067,7 @@ window.syncFromFirebase = function() {
                                                 if(!S.win_log) S.win_log = [];
                                                 if(!S.weekly_reviews) S.weekly_reviews = [];
                                                 if(!S.sleep_log) S.sleep_log = [];
-                                                                                                if(!S.notes) S.notes = [];
-                                                                                                if(!S.folders) S.folders = [];
-                                                                                                if(!S.budget) S.budget = [];
+                                                                                                                                                if(!S.budget) S.budget = [];
                                                 if(!S.workout_log) S.workout_log = [];
                         if(!S.exercises) S.exercises = DEFAULT.exercises;
 
@@ -1129,8 +1080,7 @@ window.syncFromFirebase = function() {
             if (typeof renderTimeline === 'function') renderTimeline();
             if (typeof updateDetoxUI === 'function') updateDetoxUI();
             if (typeof updateSortButtons === 'function') updateSortButtons();
-                        if (typeof window.renderNotes === 'function') window.renderNotes();
-                        if (typeof window.renderBudget === 'function') window.renderBudget();
+                                    if (typeof window.renderBudget === 'function') window.renderBudget();
                   var matrixView = document.getElementById('view-matrix');
       if (matrixView && matrixView.classList.contains('active') && typeof renderMatrix === 'function') {
         renderMatrix();
@@ -1323,11 +1273,9 @@ window.checkStorage = function() {
 }
 
 window.resetSystem = function() {
-  if(confirm('WIPE ALL DATA (EXCEPT BUDGET, NOTES & FOLDERS)? This cannot be undone.')) {
+  if(confirm('WIPE ALL DATA (EXCEPT BUDGET)? This cannot be undone.')) {
     var resetState = JSON.parse(JSON.stringify(DEFAULT));
     resetState.budget = S.budget || [];
-    resetState.notes = S.notes || [];
-    resetState.folders = S.folders || [];
     set(ref(db, 'operatives/' + OPERATIVE_ID), resetState)
       .then(() => {
         location.reload();
@@ -3316,341 +3264,7 @@ window.deleteBudget = function(id) {
     if(typeof toast === 'function') toast('TRANSACTION DELETED', 'red');
 }
 
-// ═══════════════════════════════════════════════
-// KEEP NOTES & FOLDERS
-// ═══════════════════════════════════════════════
-window.currentFolderView = null;
 
-window.viewRootFolder = function() {
-    window.currentFolderView = null;
-    document.getElementById('btn-back-folder').style.display = 'none';
-    document.getElementById('notes-view-title').style.display = 'block';
-    document.getElementById('notes-view-title').innerText = 'QUICK NOTES';
-    document.getElementById('notes-folder-edit').style.display = 'none';
-    window.renderNotes();
-};
-
-window.viewFolder = function(id, name, event) {
-    if(event) event.stopPropagation();
-    window.currentFolderView = id;
-    document.getElementById('btn-back-folder').style.display = 'block';
-    document.getElementById('notes-view-title').style.display = 'none';
-    var editInp = document.getElementById('notes-folder-edit');
-    editInp.style.display = 'block';
-    editInp.value = name || 'UNNAMED';
-    window.renderNotes();
-};
-
-window.renameCurrentFolder = function(val) {
-    if(window.currentFolderView) {
-        window.renameFolder(window.currentFolderView, val);
-    }
-};
-
-window.createNewFolder = function() {
-    if(typeof pushAppHistory === 'function') pushAppHistory();
-    if(!S.folders) S.folders = [];
-    S.folders.push({id: 'f_'+Date.now(), name: 'New Folder', createdAt: Date.now()});
-    if(typeof window.save === 'function') window.save();
-    window.renderNotes();
-    if(typeof toast === 'function') toast('FOLDER CREATED', 'amber');
-};
-
-window.deleteFolder = function(id, event) {
-    if(event) event.stopPropagation();
-    if(!confirm('Delete folder and all notes inside?')) return;
-    if(typeof pushAppHistory === 'function') pushAppHistory();
-    S.folders = S.folders.filter(f => f.id !== id);
-    if(S.notes) S.notes = S.notes.filter(n => n.folderId !== id);
-    if(window.currentFolderView === id) window.viewRootFolder();
-    else window.renderNotes();
-    if(typeof window.save === 'function') window.save();
-};
-
-window.renameFolder = function(id, newName) {
-    var f = S.folders.find(x => x.id === id);
-    if(f) {
-        f.name = newName;
-        if(typeof window.save === 'function') window.save();
-    }
-};
-
-window.dropNoteIntoFolder = function(noteId, folderId, event) {
-    event.preventDefault();
-    event.currentTarget.style.background = 'rgba(255,255,255,0.02)';
-    if(typeof pushAppHistory === 'function') pushAppHistory();
-    var n = S.notes.find(x => x.id === noteId);
-    if(n) {
-        n.folderId = folderId;
-        if(typeof window.save === 'function') window.save();
-        window.renderNotes();
-        if(typeof toast === 'function') toast('NOTE MOVED', 'amber');
-    }
-};
-
-window.copyNoteText = function(id) {
-  var note = S.notes.find(n => n.id === id);
-  if(!note) return;
-  var content = note.title ? (note.title + '\n\n' + note.text) : note.text;
-  navigator.clipboard.writeText(content);
-  if(typeof toast === 'function') toast('COPIED TO CLIPBOARD', 'blue');
-};
-
-window.copyModalNote = function() {
-  var title = document.getElementById('nm-title').value.trim();
-  var text = document.getElementById('nm-text').value.trim();
-  var content = title ? (title + '\n\n' + text) : text;
-  navigator.clipboard.writeText(content);
-  if(typeof toast === 'function') toast('COPIED TO CLIPBOARD', 'blue');
-};
-
-window.renderNotes = function() {
-  const container = document.getElementById('notes-container');
-  if(!container) return;
-  container.innerHTML = '';
-  
-  if (!window.currentFolderView && S.folders && S.folders.length > 0) {
-        const folderGrid = document.createElement('div');
-        folderGrid.style.display = 'grid';
-        folderGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(90px, 1fr))';
-        folderGrid.style.gap = '8px';
-        folderGrid.style.marginBottom = '8px';
-        folderGrid.style.flexShrink = '0';
-      
-        S.folders.forEach(f => {
-            const fel = document.createElement('div');
-            fel.className = 'card anim-slide-up';
-            fel.style.cssText = `background:rgba(255,255,255,0.03);padding:8px;display:flex;align-items:center;gap:6px;cursor:pointer;border-radius:6px;transition:background 0.2s`;
-          
-            // Drag and drop folders logic
-            fel.setAttribute('draggable', 'true');
-            fel.ondragstart = (e) => { e.dataTransfer.setData('text/plain', 'folder_' + f.id); fel.style.opacity = '0.5'; };
-            fel.ondragend = (e) => { fel.style.opacity = '1'; };
-          
-            fel.ondragover = (e) => { e.preventDefault(); fel.style.background = 'rgba(227,179,65,0.15)'; };
-            fel.ondragleave = (e) => { fel.style.background = 'rgba(255,255,255,0.03)'; };
-            fel.ondrop = (e) => {
-                e.preventDefault();
-                var data = e.dataTransfer.getData('text/plain');
-              
-                if(data && data.startsWith('n_')) {
-                    window.dropNoteIntoFolder(data, f.id, e);
-                } else if(data && data.startsWith('folder_')) {
-                    var draggedFolderId = data.replace('folder_', '');
-                    if (draggedFolderId !== f.id) {
-                        var fi = S.folders.findIndex(x => x.id === draggedFolderId);
-                        var ti = S.folders.findIndex(x => x.id === f.id);
-                        if (fi > -1 && ti > -1) {
-                            var [item] = S.folders.splice(fi, 1);
-                            S.folders.splice(ti, 0, item);
-                            if(typeof window.save === 'function') window.save();
-                            window.renderNotes();
-                        }
-                    }
-                }
-                fel.style.background = 'rgba(255,255,255,0.03)';
-            };
-            fel.onclick = (e) => window.viewFolder(f.id, f.name, e);
-          
-            fel.innerHTML = `
-                <i class="fa-solid fa-folder" style="color:var(--amber);font-size:11px;flex-shrink:0"></i>
-                <div style="color:var(--tp);font-size:10px;font-family:'Product Sans','Google Sans',sans-serif;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1">${f.name || 'Unnamed'}</div>
-                <button class="btn" style="padding:2px 4px;font-size:10px;color:var(--td);background:transparent;flex-shrink:0" onclick="window.deleteFolder('${f.id}', event)" title="Delete"><i class="fa-solid fa-trash"></i></button>
-            `;
-            folderGrid.appendChild(fel);
-        });
-        container.appendChild(folderGrid);
-    }
-
-  if(!S.notes || S.notes.length === 0) {
-    return;
-  }
-  
-  let visibleNotes = S.notes.filter(n => window.currentFolderView ? n.folderId === window.currentFolderView : !n.folderId);
-
-  let sortedNotes = visibleNotes.sort((a, b) => {
-    if(a.pinned && !b.pinned) return -1;
-    if(!a.pinned && b.pinned) return 1;
-    return (b.updatedAt || 0) - (a.updatedAt || 0);
-  });
-
-  sortedNotes.forEach(note => {
-      const el = document.createElement('div');
-                  el.className = 'card anim-slide-up';
-                  // Make the entire card clickable and pop on hover
-                  el.style.cssText = `break-inside:avoid;margin-bottom:8px;background:${note.color||'rgba(227,179,65,0.08)'};padding:10px 12px;position:relative;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:transform 0.1s, background 0.2s`;
-                  el.setAttribute('draggable', 'true');
-                  el.ondragstart = (e) => { e.dataTransfer.setData('text/plain', note.id); el.style.opacity = '0.5'; };
-                  el.ondragend = (e) => { el.style.opacity = '1'; };
-                  el.onmouseover = () => el.style.transform = 'scale(1.01)';
-      el.onmouseout = () => el.style.transform = 'scale(1)';
-      el.onclick = () => window.openNoteModal(note.id);
-
-      const urlMatch = note.text ? note.text.match(/https?:\/\/[^\s]+/) : null;
-      const linkBtnHtml = urlMatch ? `<a href="${urlMatch[0]}" target="_blank" class="btn" style="padding:2px 8px;font-size:10px;color:var(--blue);background:rgba(92,157,255,0.15);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:4px" title="Open Link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square"></i> OPEN LINK</a>` : '';
-      const dateStr = note.updatedAt ? new Date(note.updatedAt).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}) : '';
-      const copyBtnHtml = `<button class="btn" style="padding:2px 6px;font-size:10px;color:var(--td);background:transparent" onclick="event.stopPropagation(); window.copyNoteText('${note.id}')" title="Copy"><i class="fa-regular fa-copy"></i></button>`;
-
-      const imgHtml = note.imageUrl ? `<img src="${note.imageUrl}" style="width:100%;border-radius:4px;margin-bottom:4px;object-fit:cover;max-height:140px;background:rgba(0,0,0,0.1)">` : '';
-      const titleHtml = note.title ? `<div style="font-family:'Product Sans','Google Sans',sans-serif;font-size:14px;font-weight:700;color:var(--tp);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${note.title}</div>` : '';
-      const textHtml = note.text ? `<div style="color:var(--tp);font-size:12px;font-family:'Product Sans','Google Sans','Open Sans',sans-serif;line-height:1.4;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden">${note.text}</div>` : '';
-
-      el.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-          <div style="flex:1;min-width:0">${titleHtml}${imgHtml}${textHtml}</div>
-          ${note.pinned ? `<i class="fa-solid fa-thumbtack" style="font-size:10px;color:var(--tp);margin-top:4px"></i>` : ''}
-        </div>
-          <div>${linkBtnHtml}</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
-            <span class="mono" style="font-size:9px;color:var(--td)">${dateStr}</span>
-            ${copyBtnHtml}
-          </div>
-        `;
-        container.appendChild(el);
-  });
-}
-
-window.openNoteModal = function(id) {
-  if(id) {
-    var n = S.notes.find(x=>x.id===id);
-    if(!n) return;
-    document.getElementById('nm-id').value = n.id;
-    document.getElementById('nm-title').value = n.title || '';
-    document.getElementById('nm-text').value = n.text || '';
-    document.getElementById('nm-color').value = n.color || 'rgba(227,179,65,0.08)';
-    document.getElementById('nm-border').value = n.borderColor || 'var(--amber)';
-    document.getElementById('nm-pin').style.color = n.pinned ? 'var(--tp)' : 'var(--td)';
-    document.getElementById('nm-pin').dataset.pinned = n.pinned ? 'true' : 'false';
-    document.getElementById('note-modal').querySelector('.modal').style.background = n.color || 'rgba(227,179,65,0.08)';
-    document.getElementById('note-modal').querySelector('.modal').style.borderTop = `4px solid ${n.borderColor || 'var(--amber)'}`;
-    
-    document.getElementById('nm-image-data').value = n.imageUrl || '';
-    if(n.imageUrl) {
-        document.getElementById('nm-image-preview').src = n.imageUrl;
-        document.getElementById('nm-image-preview-container').style.display = 'block';
-    } else {
-        document.getElementById('nm-image-preview-container').style.display = 'none';
-        document.getElementById('nm-image-preview').src = '';
-    }
-  } else {
-    document.getElementById('nm-id').value = '';
-    document.getElementById('nm-title').value = '';
-    document.getElementById('nm-text').value = '';
-    document.getElementById('nm-color').value = 'rgba(227,179,65,0.08)';
-    document.getElementById('nm-border').value = 'var(--amber)';
-    document.getElementById('nm-pin').style.color = 'var(--td)';
-    document.getElementById('nm-pin').dataset.pinned = 'false';
-    document.getElementById('note-modal').querySelector('.modal').style.background = 'var(--surface)';
-    document.getElementById('note-modal').querySelector('.modal').style.borderTop = `4px solid var(--amber)`;
-    
-    document.getElementById('nm-image-data').value = '';
-    document.getElementById('nm-image-preview-container').style.display = 'none';
-    document.getElementById('nm-image-preview').src = '';
-  }
-  window.openModal('note-modal');
-}
-
-window.handleNoteImageUpload = function(event) {
-    const file = event.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        document.getElementById('nm-image-data').value = e.target.result;
-        document.getElementById('nm-image-preview').src = e.target.result;
-        document.getElementById('nm-image-preview-container').style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-};
-
-window.removeNoteImage = function() {
-    document.getElementById('nm-image-data').value = '';
-    document.getElementById('nm-image-preview-container').style.display = 'none';
-    document.getElementById('nm-image-preview').src = '';
-    document.getElementById('nm-image-upload').value = '';
-};
-
-window.toggleModalPin = function() {
-  var btn = document.getElementById('nm-pin');
-  var isPinned = btn.dataset.pinned === 'true';
-  btn.dataset.pinned = !isPinned ? 'true' : 'false';
-  btn.style.color = !isPinned ? 'var(--tp)' : 'var(--td)';
-}
-
-window.cycleModalColor = function() {
-  const colors = [
-    {bg:'rgba(227,179,65,0.08)', border:'var(--amber)'},
-    {bg:'rgba(92,157,255,0.08)', border:'var(--blue)'},
-    {bg:'rgba(57,211,83,0.08)', border:'var(--green)'},
-    {bg:'rgba(248,81,73,0.08)', border:'var(--red)'},
-    {bg:'rgba(188,140,255,0.08)', border:'var(--purple)'}
-  ];
-  let cur = document.getElementById('nm-border').value;
-  let idx = colors.findIndex(c => c.border === cur);
-  idx = (idx + 1) % colors.length;
-  document.getElementById('nm-color').value = colors[idx].bg;
-  document.getElementById('nm-border').value = colors[idx].border;
-  document.getElementById('note-modal').querySelector('.modal').style.background = colors[idx].bg;
-  document.getElementById('note-modal').querySelector('.modal').style.borderTop = `4px solid ${colors[idx].border}`;
-}
-
-window.saveNoteModal = function() {
-  if(typeof pushAppHistory === 'function') pushAppHistory();
-  var id = document.getElementById('nm-id').value;
-  var title = document.getElementById('nm-title').value.trim();
-  var text = document.getElementById('nm-text').value.trim();
-  var color = document.getElementById('nm-color').value;
-  var border = document.getElementById('nm-border').value;
-  var pinned = document.getElementById('nm-pin').dataset.pinned === 'true';
-  var imageUrl = document.getElementById('nm-image-data').value;
-
-  if(id) {
-     var n = S.notes.find(x=>x.id===id);
-     if(n) {
-        n.title = title; n.text = text; n.color = color; n.borderColor = border; n.pinned = pinned; n.updatedAt = Date.now(); n.imageUrl = imageUrl;
-     }
-  } else {
-     if(title || text || imageUrl) {
-        if(!S.notes) S.notes = [];
-        S.notes.push({id:'n_'+Date.now(), title:title, text:text, color:color, borderColor:border, pinned:pinned, updatedAt:Date.now(), folderId: window.currentFolderView || null, imageUrl: imageUrl});
-     }
-  }
-  if(typeof window.save === 'function') window.save();
-  window.renderNotes();
-  window.closeModal('note-modal');
-}
-
-window.deleteModalNote = function() {
-  var id = document.getElementById('nm-id').value;
-  if(id) {
-     if(typeof pushAppHistory === 'function') pushAppHistory();
-     S.notes = S.notes.filter(n => n.id !== id);
-     if(typeof window.save === 'function') window.save();
-     window.renderNotes();
-  }
-  window.closeModal('note-modal');
-}
-
-window.quickAddNote = function() {
-  var inp = document.getElementById('quick-note-input');
-  var text = inp.value.trim();
-  if(!text) return;
-  if(typeof pushAppHistory === 'function') pushAppHistory();
-  if(!S.notes) S.notes = [];
-  S.notes.push({
-    id: 'n_' + Date.now(),
-    title: '',
-    text: text,
-    color: 'rgba(227,179,65,0.08)',
-    borderColor: 'var(--amber)',
-    pinned: false,
-    updatedAt: Date.now(),
-    folderId: window.currentFolderView || null
-  });
-  inp.value = '';
-  if(typeof window.save === 'function') window.save();
-  window.renderNotes();
-  if(typeof toast === 'function') toast('QUICK NOTE SAVED', 'amber');
-}
 
 // ═══════════════════════════════════════════════
 // BOOT SEQUENCE
@@ -3692,10 +3306,9 @@ window.onload = () => {
   
   window.renderMeditation();
   
-        if (typeof window.renderBudget === 'function') window.renderBudget();
-        if (typeof window.renderNotes === 'function') window.renderNotes();
+          if (typeof window.renderBudget === 'function') window.renderBudget();
   
-    updateDetoxUI();
+      updateDetoxUI();
   updateSortButtons();
   // Init filter state from saved
   const savedFilter=document.querySelector(`.filter-btn[data-filter="${S.taskFilter}"]`);
