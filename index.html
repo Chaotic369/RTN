@@ -1416,17 +1416,20 @@ window.shiftTimelineFromTask = function(taskId, isRevert) {
 
         var offset = 0;
         if (!isRevert) {
-            tl._originalTime = tl.time;
+            var originalTime = tl.time;
+            tl._originalTime = originalTime;
             
-            // Snap completed task to NOW to reset day anchors properly
+            // Snap completed task to NOW
             var hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-            tl.time = hm; 
+            tl.time = hm;
 
-            var nextH = parseInt(nextTl.time.split(':')[0]);
-            var nextM = parseInt(nextTl.time.split(':')[1]);
-            var rawNextMins = nextH * 60 + nextM;
+            // Offset = how early/late you completed this task vs its scheduled time
+            // This preserves the interval between tasks exactly
+            var schH = parseInt(originalTime.split(':')[0]);
+            var schM = parseInt(originalTime.split(':')[1]);
+            var schMins = schH * 60 + schM;
             
-            offset = rawNowMins - rawNextMins;
+            offset = rawNowMins - schMins;
             
             if (offset > 720) offset -= 1440;
             else if (offset < -720) offset += 1440;
@@ -1470,7 +1473,6 @@ window.shiftTimelineFromTask = function(taskId, isRevert) {
             changed = true;
         }
 
-        // Re-sort to maintain chronological order after time-traveling
         S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
 
         if(changed || !isRevert) {
