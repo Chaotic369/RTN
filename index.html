@@ -1464,15 +1464,9 @@ window.shiftTimelineFromTask = function(taskId, isRevert) {
         }
 
         var changed = false;
-        for (var i = tIndex + 1; i < S.timeline.length; i++) {
-            var t = S.timeline[i];
-            var lbl = t.label.toUpperCase();
-            
-            if(lbl.indexOf('COLLEGE') !== -1 || lbl.indexOf('BASE') !== -1 || lbl.indexOf('POWER DOWN: SLEEP') !== -1) {
-                break; 
-            }
-            
-            var oldH = parseInt(t.time.split(':')[0]);
+                for (var i = tIndex + 1; i < S.timeline.length; i++) {
+                    var t = S.timeline[i];
+                    var oldH = parseInt(t.time.split(':')[0]);
             var oldM = parseInt(t.time.split(':')[1]);
             var oldMins = oldH * 60 + oldM;
             var newMins = oldMins + offset;
