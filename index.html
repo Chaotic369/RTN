@@ -25,11 +25,11 @@ tailwind.config = {
 </script>
 <style>
 :root, :root.dark {
-  --blue: #6366f1; --green: #10b981; --red: #ef4444;
-  --amber: #f59e0b; --purple: #8b5cf6; --teal: #14b8a6;
-  --bg-color: #121212; --surface: #1e1e1e; --elevated: #2a2a2a; --panel: #1e1e1e;
-  --border: #333333; --tp: #f3f4f6; --tm: #9ca3af; --td: #6b7280;
-  --glass-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --blue: #3b82f6; --green: #22c55e; --red: #ef4444;
+  --amber: #f59e0b; --purple: #a855f7; --teal: #14b8a6;
+  --bg-color: #000000; --surface: #0a0a0a; --elevated: #111111; --panel: #0a0a0a;
+  --border: #222222; --tp: #ffffff; --tm: #9ca3af; --td: #6b7280;
+  --glass-shadow: 0 8px 24px rgba(0,0,0,0.8);
 }
 :root.light {
   --blue: #4f46e5; --green: #059669; --red: #dc2626;
@@ -117,18 +117,34 @@ button { cursor: pointer; border-radius: 9999px; }
 /* Floating Bars */
 .floating-bar {
   position: fixed;
-  width: 240px;
-  max-width: calc(100vw - 32px);
+  bottom: 96px !important;
+  right: 24px !important;
+  width: 50vw !important;
+  max-width: calc(100vw - 48px) !important;
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
-  border-radius: 9999px !important;
-  padding: 6px 10px 6px 14px !important;
+  border-radius: 24px !important;
+  padding: 12px 16px !important;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 6px 16px -4px rgba(0,0,0,0.1) !important;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8) !important;
   z-index: 100;
   transition: all 0.2s ease;
+}
+
+.overlay.right-bottom-modal {
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 24px;
+}
+.overlay.right-bottom-modal .modal {
+  margin: 0 0 100px 0;
+  animation: slideUpRight 200ms ease-out;
+}
+@keyframes slideUpRight {
+  from { opacity: 0; transform: translate(20px, 20px); }
+  to { opacity: 1; transform: translate(0, 0); }
 }
 .floating-bar input {
   flex: 1;
@@ -433,7 +449,7 @@ h1, h2, h3 { color: var(--tp); }
   </div>
 </div>
 
-<div id="session-modal" class="overlay" onclick="if(event.target===this)window.closeModal('session-modal')">
+<div id="session-modal" class="overlay right-bottom-modal" onclick="if(event.target===this)window.closeModal('session-modal')">
   <div class="modal" style="width:360px">
     <h2>SESSION LOGGER</h2>
     <div class="label mb-1">EXERCISE</div>
@@ -463,7 +479,7 @@ h1, h2, h3 { color: var(--tp); }
 
 
 
-<div id="ex-modal" class="overlay">
+<div id="ex-modal" class="overlay right-bottom-modal">
   <div class="modal" style="width:360px">
     <h2>EXERCISE CONFIGURATION</h2>
     <input type="hidden" id="ex-id">
@@ -613,11 +629,11 @@ h1, h2, h3 { color: var(--tp); }
             <div id="view-command" class="view active" style="flex-direction:row">
   <div style="flex:0 0 58%;display:flex;flex-direction:column;gap:10px;height:100%;overflow:hidden">
 
-    <div class="floating-bar" style="bottom: 16px; right: 16px; width: 250px;">
-                          <span class="mono" style="color:var(--green);font-weight:700;font-size:14px">›</span>
-                          <input id="cmd-input" type="text" class="mono" placeholder="Inject directive...">
-                          <button class="btn btn-blue" onclick="window.openNewTaskModal()"><i class="fa-solid fa-plus"></i></button>
-                        </div>
+    <div class="floating-bar">
+                              <span class="mono" style="color:var(--green);font-weight:700;font-size:16px">›</span>
+                              <input id="cmd-input" type="text" class="mono" placeholder="Inject directive..." style="font-size:14px !important;">
+                              <button class="btn btn-blue" style="padding:8px 14px;font-size:12px" onclick="window.openNewTaskModal()"><i class="fa-solid fa-plus"></i></button>
+                            </div>
 
     <div class="card" style="padding:8px 12px;flex-shrink:0;background:rgba(92,157,255,0.03);cursor:pointer" onclick="window.openMorningIntention()">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
@@ -696,10 +712,10 @@ h1, h2, h3 { color: var(--tp); }
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                         <span class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--green)">WIN LOG</span>
                       </div>
-                      <div class="floating-bar" style="bottom: 60px; right: 16px; width: 200px;">
-                                              <span style="color:var(--green);font-size:10px">▲</span>
-                                              <input id="win-input" type="text" placeholder="Log a win..." onkeydown="if(event.key==='Enter')window.addWin()">
-                                            </div>
+                      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:6px 12px;margin-bottom:12px">
+                                                                    <span style="color:var(--green);font-size:10px">▲</span>
+                                                                    <input id="win-input" type="text" placeholder="Log a win..." style="flex:1;background:transparent!important;border:none!important;padding:0!important;box-shadow:none!important;font-size:11px!important" onkeydown="if(event.key==='Enter')window.addWin()">
+                                                                  </div>
                       <div id="win-log-list"></div>
                     </div>
 
@@ -716,16 +732,15 @@ h1, h2, h3 { color: var(--tp); }
         <div style="font-size:11px;color:var(--td);margin-top:2px">Progressive overload. Every session counts.</div>
       </div>
       <div style="display:flex;gap:6px">
-        <div class="card" style="padding:8px 12px;text-align:center">
-          <div class="label">SESSIONS</div>
-          <div id="phys-session-count" class="mono" style="font-size:18px;color:var(--green);font-weight:700">0</div>
-        </div>
-        <div class="card" style="padding:8px 12px;text-align:center">
-          <div class="label">STREAK</div>
-          <div class="mono" style="font-size:18px;color:var(--amber);font-weight:700">🔥 <span id="phys-streak">0</span></div>
-        </div>
-        <button class="btn btn-green" onclick="window.openExerciseModal()" style="padding:6px 12px"><i class="fa-solid fa-plus" style="font-size:10px"></i> EXERCISE</button>
-      </div>
+              <div class="card" style="padding:8px 12px;text-align:center">
+                <div class="label">SESSIONS</div>
+                <div id="phys-session-count" class="mono" style="font-size:18px;color:var(--green);font-weight:700">0</div>
+              </div>
+              <div class="card" style="padding:8px 12px;text-align:center">
+                <div class="label">STREAK</div>
+                <div class="mono" style="font-size:18px;color:var(--amber);font-weight:700">🔥 <span id="phys-streak">0</span></div>
+              </div>
+            </div>
     </div>
     <div id="exercise-grid" style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow-y:auto;padding-right:4px;align-content:start"></div>
   </div>
@@ -736,10 +751,10 @@ h1, h2, h3 { color: var(--tp); }
         <div id="workout-history" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
       </div>
 
-      <div class="floating-bar" style="bottom: 16px; right: 16px; width: auto; padding: 8px 14px !important; cursor: pointer; background: var(--green) !important; color: #fff !important; border: none !important;" onclick="window.openModal('session-modal')">
-            <i class="fa-solid fa-dumbbell" style="font-size:12px"></i>
-            <span style="font-size:11px;font-weight:600;margin-left:4px">SESSION</span>
-          </div>
+      <div class="floating-bar" style="width: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; right: 24px !important; justify-content: flex-end;">
+                <button class="btn" style="background:var(--surface);border:1px solid var(--border)!important;padding:12px 16px;font-size:11px" onclick="window.openExerciseModal()"><i class="fa-solid fa-plus"></i> EXERCISE</button>
+                <button class="btn btn-green" style="padding:12px 16px;font-size:11px" onclick="window.openModal('session-modal')"><i class="fa-solid fa-dumbbell"></i> SESSION</button>
+            </div>
     </div>
 </div>
 
@@ -885,13 +900,13 @@ h1, h2, h3 { color: var(--tp); }
                </div>
            </div>
 
-           <div class="floating-bar" style="bottom: 16px; right: 16px; width: 250px;">
-                                                <span class="mono" style="color:var(--amber);font-weight:700;font-size:14px;display:flex;align-items:center;padding-bottom:2px">›</span>
+           <div class="floating-bar">
+                                                           <span class="mono" style="color:var(--amber);font-weight:700;font-size:16px;display:flex;align-items:center;padding-bottom:2px">›</span>
        
-                                                <input id="budget-item" type="text" class="mono" placeholder="Amount + Item" autocomplete="off" onkeydown="if(event.key==='Enter')window.addBudgetEntry()" oninput="window.checkBudgetPerson()">
+                                                           <input id="budget-item" type="text" class="mono" placeholder="Amount + Item" autocomplete="off" style="font-size:14px !important;" onkeydown="if(event.key==='Enter')window.addBudgetEntry()" oninput="window.checkBudgetPerson()">
        
-                                                <button class="btn btn-amber" onclick="window.addBudgetEntry()"><i class="fa-solid fa-plus"></i></button>
-                                            </div>
+                                                           <button class="btn btn-amber" style="padding:8px 14px;font-size:12px" onclick="window.addBudgetEntry()"><i class="fa-solid fa-plus"></i></button>
+                                                       </div>
    
            <div style="display:flex;flex-wrap:wrap;gap:5px;padding:6px 2px;flex-shrink:0">
                           <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('v')">v · VEG</button>
@@ -904,10 +919,10 @@ h1, h2, h3 { color: var(--tp); }
                           <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('tf')">tf · TAKEN FROM</button>
                       </div>
 
-                      <div id="budget-person-container" class="floating-bar" style="display:none; bottom: 60px; right: 16px; width: 200px;">
-                                                           <span class="mono" style="color:var(--tm);font-size:12px">@</span>
-                                                           <input id="budget-person" type="text" placeholder="Person name...">
-                                                       </div>
+                      <div id="budget-person-container" class="floating-bar" style="display:none; bottom: 160px !important; right: 24px !important; width: 30vw !important;">
+                                                                                 <span class="mono" style="color:var(--tm);font-size:14px">@</span>
+                                                                                 <input id="budget-person" type="text" placeholder="Person name..." style="font-size:13px !important;">
+                                                                             </div>
 
            <!-- LEDGER / STATS TABS -->
                       <div style="display:flex;gap:4px;flex-shrink:0">
@@ -2312,22 +2327,7 @@ window.activeTaskAddMin = function() {
    window.tickActiveTask();
 };
 
-// Style for active filter buttons
-document.head.insertAdjacentHTML('beforeend',`<style>
-:root {
-  --blue: #6366f1; --green: #10b981; --red: #ef4444;
-  --amber: #f59e0b; --purple: #8b5cf6; --teal: #14b8a6;
-  --bg-color: #000000; --surface: #0a0a0a; --elevated: #121212; --panel: #0a0a0a;
-  --border: #222222; --tp: #ffffff; --tm: #9ca3af; --td: #6b7280;
-  --glass-shadow: none;
-}
-body { background: var(--bg-color); color: var(--tp); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; min-height: 100vh; margin: 0; display: flex; flex-direction: column; }
-.view { display: none; padding: 20px; flex: 1; }
-.view.active { display: flex; flex-direction: column; gap: 16px; }
-.floating-bar { position: fixed; bottom: 20px; right: 20px; width: calc(100% - 40px); max-width: 400px; background: #1a1a1a; padding: 12px 20px; border-radius: 999px; display: flex; align-items: center; gap: 12px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-.floating-bar input { flex: 1; background: transparent; border: none; color: var(--tp); outline: none; }
-.btn { background: #333; border: none; color: var(--tp); padding: 8px 16px; border-radius: 999px; cursor: pointer; font-size: 12px; }
-</style>`);
+
 
 // ═══════════════════════════════════════════════
 // DOPAMINE TAX & DETOX STREAK
