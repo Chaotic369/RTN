@@ -75,8 +75,11 @@ nav, .modal, .toast, .fc-face {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
 input, textarea, select, button { outline: none; font-family: inherit; }
-input, textarea, select { background: var(--elevated) !important; border: none !important; outline: none !important; color: var(--tp); padding: 8px 16px; font-size: 13px; border-radius: 16px; transition: all 150ms ease; }
-input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 2px rgba(79,70,229,0.1) !important; }
+input, textarea, select { background: transparent !important; border: 1px solid var(--border) !important; outline: none !important; color: var(--tp); padding: 8px 16px; font-size: 13px; border-radius: 8px; transition: all 150ms ease; }
+input:focus, textarea:focus, select:focus { border-color: var(--tm) !important; }
+
+#tools-sidebar { position: fixed; top: 0; right: 0; width: 260px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); transform: translateX(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); z-index: 9999; padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: -4px 0 24px rgba(0,0,0,0.2); }
+#tools-sidebar.open { transform: translateX(0); }
 button { cursor: pointer; border-radius: 9999px; }
 
 .btn { border: none !important; outline: none !important; color: var(--tm); padding: 8px 16px; font-size: 12px; font-weight: 500; background: var(--elevated); transition: all 120ms; border-radius: 9999px; }
@@ -458,29 +461,7 @@ h1, h2, h3 { color: var(--tp); }
   </div>
 </div>
 
-<div id="meditation-modal" class="overlay" onclick="if(event.target===this)window.closeModal('meditation-modal')">
-  <div class="modal" style="width:360px">
-    <h2>LOG MEDITATION</h2>
-    <div class="label mb-1">DURATION (minutes)</div>
-    <input type="number" id="med-duration" class="w-full mb-3" placeholder="" min="1">
-    <div class="label mb-1">TYPE</div>
-    <select id="med-type" class="w-full mb-3">
-      <option>Focused Breathing</option>
-      <option>Body Scan</option>
-      <option>Visualization</option>
-      <option>Mantra</option>
-      <option>Open Monitoring</option>
-    </select>
-    <div class="label mb-1">QUALITY (1–5)</div>
-    <input type="number" id="med-quality" class="w-full mb-3" min="1" max="5" placeholder="">
-    <div class="label mb-1">NOTES</div>
-    <textarea id="med-notes" class="w-full mb-4" rows="2" placeholder=""></textarea>
-    <div class="flex gap-2 justify-end">
-      <button class="btn" onclick="window.closeModal('meditation-modal')">CANCEL</button>
-      <button class="btn btn-purple" onclick="window.logMeditation()">LOG SESSION</button>
-    </div>
-  </div>
-</div>
+
 
 <div id="ex-modal" class="overlay">
   <div class="modal" style="width:360px">
@@ -585,18 +566,13 @@ h1, h2, h3 { color: var(--tp); }
                         <i class="fa-solid fa-infinity"></i>
                       </div>
                       <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
-                  <button class="nav-tab" data-view="view-physical" title="PHYSICAL" style="padding:0 10px"><i class="fa-solid fa-dumbbell" style="font-size:11px"></i></button>
-                    <button class="nav-tab" data-view="view-neural" title="NEURAL" style="padding:0 10px"><i class="fa-solid fa-brain" style="font-size:11px"></i></button>
-                    <button class="nav-tab" data-view="view-budget" title="BUDGET" style="padding:0 10px"><i class="fa-solid fa-indian-rupee-sign" style="font-size:11px"></i></button>
-                    <button class="nav-tab" data-view="view-matrix" title="MATRIX" style="padding:0 10px"><i class="fa-solid fa-chart-simple" style="font-size:11px"></i></button>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px">
-                          <button class="btn" style="padding:3px 8px;font-size:10px" title="Toggle Theme" onclick="document.documentElement.classList.toggle('light')"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                          <button id="btn-undo-app" class="btn" style="padding:3px 8px;font-size:10px" title="Undo Last Action"><i class="fa-solid fa-rotate-left"></i></button>
-                          <button class="btn btn-blue" style="padding:3px 8px;font-size:10px" title="Morning Intention" onclick="window.openMorningIntention()"><i class="fa-solid fa-sun"></i></button>
-                          <button class="btn btn-purple" style="padding:3px 8px;font-size:10px" title="Nightly Debrief" onclick="window.openDebrief()"><i class="fa-solid fa-moon"></i></button>
-                          <button class="btn btn-teal" style="padding:3px 8px;font-size:10px" title="Log Sleep" onclick="window.openSleepLog()"><i class="fa-solid fa-bed"></i></button>
-                        </div>
+                                        <button class="nav-tab" data-view="view-physical" title="PHYSICAL" style="padding:0 10px"><i class="fa-solid fa-dumbbell" style="font-size:11px"></i></button>
+                                          <button class="nav-tab" data-view="view-budget" title="BUDGET" style="padding:0 10px"><i class="fa-solid fa-indian-rupee-sign" style="font-size:11px"></i></button>
+                                          <button class="nav-tab" data-view="view-matrix" title="MATRIX" style="padding:0 10px"><i class="fa-solid fa-chart-simple" style="font-size:11px"></i></button>
+                              </div>
+                              <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px">
+                                                <button class="btn" style="padding:3px 8px;font-size:10px" title="Tools" onclick="document.getElementById('tools-sidebar').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
+                                              </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
         <div style="text-align:right;display:flex;flex-direction:column;justify-content:center">
@@ -622,7 +598,19 @@ h1, h2, h3 { color: var(--tp); }
               </div>
             </nav>
 
-<div id="view-command" class="view active" style="flex-direction:row">
+            <div id="tools-sidebar">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                <h3 class="mono" style="font-size:12px;margin:0;color:var(--td);letter-spacing:0.1em">SYSTEM TOOLS</h3>
+                <button class="btn" style="padding:3px 8px;font-size:10px;background:transparent" onclick="document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <button class="btn" style="text-align:left;background:transparent;border:1px solid var(--border)!important" onclick="document.documentElement.classList.toggle('light')"><i class="fa-solid fa-circle-half-stroke" style="width:20px"></i> Toggle Theme</button>
+              <button id="btn-undo-app" class="btn" style="text-align:left;background:transparent;border:1px solid var(--border)!important" title="Undo Last Action"><i class="fa-solid fa-rotate-left" style="width:20px"></i> Undo Last Action</button>
+              <button class="btn" style="text-align:left;color:var(--blue);background:transparent;border:1px solid var(--border)!important" onclick="window.openMorningIntention(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-sun" style="width:20px"></i> Morning Intention</button>
+              <button class="btn" style="text-align:left;color:var(--purple);background:transparent;border:1px solid var(--border)!important" onclick="window.openDebrief(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-moon" style="width:20px"></i> Nightly Debrief</button>
+              <button class="btn" style="text-align:left;color:var(--teal);background:transparent;border:1px solid var(--border)!important" onclick="window.openSleepLog(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-bed" style="width:20px"></i> Log Sleep</button>
+            </div>
+
+            <div id="view-command" class="view active" style="flex-direction:row">
   <div style="flex:0 0 58%;display:flex;flex-direction:column;gap:10px;height:100%;overflow:hidden">
 
     <div class="floating-bar" style="bottom: 16px; right: 16px; width: 250px;">
@@ -755,26 +743,7 @@ h1, h2, h3 { color: var(--tp); }
     </div>
 </div>
 
-<div id="view-neural" class="view" style="flex-direction:column;gap:0">
-  <div id="neural-meditation" style="display:flex;flex:1;flex-direction:row;gap:16px;overflow:hidden">
-      <div class="card" style="width:260px;flex-shrink:0;padding:24px;display:flex;flex-direction:column;gap:10px">
-          <div class="mono" style="font-size:12px;letter-spacing:.08em;color:var(--purple);margin-bottom:8px">MEDITATION STATS</div>
-          <div class="label">STREAK</div>
-          <div class="mono" style="font-size:28px;color:var(--purple);font-weight:700;margin-top:4px;margin-bottom:12px">🧘 <span id="med-streak">0</span> days</div>
-          <div class="label">TOTAL THIS WEEK</div>
-          <div id="med-weekly" class="mono" style="font-size:18px;color:var(--tp);margin-top:4px">0 min</div>
-      </div>
-      
-      <div class="floating-bar" style="bottom: 16px; right: 16px; width: auto; padding: 8px 14px !important; cursor: pointer; background: var(--purple) !important; color: #fff !important; border: none !important;" onclick="window.openModal('meditation-modal')">
-              <i class="fa-solid fa-brain" style="font-size:12px"></i>
-              <span style="font-size:11px;font-weight:600;margin-left:4px">MEDITATE</span>
-            </div>
-      <div class="card" style="flex:1;padding:14px;overflow:hidden;display:flex;flex-direction:column">
-              <div class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--tp);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:10px">MEDITATION LOG</div>
-              <div id="med-log-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
-            </div>
-          </div>
-      </div>
+
 
 <div id="view-matrix" class="view" style="flex-direction:column;gap:12px;overflow-y:auto">
   <div class="card" style="padding:16px;display:flex;align-items:center;gap:16px;flex-shrink:0;cursor:pointer" onclick="window.openModal('settings-modal')">
@@ -820,10 +789,7 @@ h1, h2, h3 { color: var(--tp); }
           <div class="label">WORKOUTS</div>
           <div id="stat-workouts" class="mono" style="font-size:24px;color:var(--tp);font-weight:700;margin-top:4px">0</div>
         </div>
-        <div class="card" style="flex:1;min-width:120px;padding:12px;border-left:2px solid var(--teal)">
-      <div class="label">MED MINUTES</div>
-      <div id="stat-med" class="mono" style="font-size:24px;color:var(--tp);font-weight:700;margin-top:4px">0</div>
-    </div>
+        
   </div>
 
   <div style="display:flex;gap:12px;overflow:hidden;min-height:260px">
@@ -1065,7 +1031,7 @@ document.getElementById('btn-undo-app').addEventListener('click', function() {
     updateHeader();
     renderTasks();
     renderExercises();
-            if (typeof window.renderMeditation === 'function') window.renderMeditation();
+            
         if (typeof window.renderBudget === 'function') window.renderBudget();
                         if (S.timeline) S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
                 if (typeof renderTimeline === 'function') renderTimeline();
@@ -1163,7 +1129,7 @@ window.syncFromFirebase = function() {
       if (typeof renderTasks === 'function') renderTasks();
                   if (typeof window.renderActiveTask === 'function') window.renderActiveTask();
                   if (typeof renderExercises === 'function') renderExercises();
-                  if (typeof window.renderMeditation === 'function') window.renderMeditation();
+                  
                   if (S.timeline) S.timeline.sort(function(a,b) { return timeToMins(a.time) - timeToMins(b.time); });
             if (typeof renderTimeline === 'function') renderTimeline();
             if (typeof updateDetoxUI === 'function') updateDetoxUI();
@@ -2664,29 +2630,27 @@ function renderExercises() {
     const progPct = Math.min(100, (sessionsDone/10)*100);
 
     const card = document.createElement('div');
-    card.className='ex-card anim-slide-up';
-    card.innerHTML=`
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div>
-          <div style="font-weight:600;color:var(--tp);font-size:13px">${ex.name}</div>
-          <span class="pill" style="color:var(--green);background:rgba(57,211,83,.08);border-color:rgba(57,211,83,.25);margin-top:3px">${ex.group}</span>
-        </div>
-        <div style="display:flex;gap:4px">
-          <button class="btn" style="padding:3px 7px;font-size:10px" onclick="window.openExerciseModal('${ex.id}')"><i class="fa-solid fa-pen"></i></button>
-          <button class="btn btn-red" style="padding:3px 7px;font-size:10px" onclick="window.deleteExercise('${ex.id}')"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-      <div style="display:flex;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;margin-bottom:6px">
-        <div><div style="color:var(--td);font-size:9px;margin-bottom:2px">TARGET</div><div style="color:var(--tp);font-weight:700">${targetDisplay}</div></div>
-        <div><div style="color:var(--td);font-size:9px;margin-bottom:2px">PERSONAL BEST</div><div style="color:var(--blue)">${prDisplay}</div></div>
-        <div><div style="color:var(--td);font-size:9px;margin-bottom:2px">NEXT TARGET</div><div style="color:var(--amber)">${nextDisplay}</div></div>
-      </div>
-      <div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--td);margin-bottom:3px">SESSIONS: ${sessionsDone}</div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${progPct}%;background:var(--green)"></div></div>
-      </div>
-    `;
-    grid.appendChild(card);
+        card.className='ex-card anim-slide-up';
+        card.style.borderBottom = '1px solid var(--border)';
+        card.innerHTML=`
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="font-weight:500;color:var(--tp);font-size:13px">${ex.name} <span class="mono" style="color:var(--td);font-size:9px;margin-left:6px">${ex.group}</span></div>
+            <div style="display:flex;gap:8px">
+              <button style="background:none;border:none;color:var(--tm);cursor:pointer;font-size:11px" onclick="window.openExerciseModal('${ex.id}')"><i class="fa-solid fa-pen"></i></button>
+              <button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px" onclick="window.deleteExercise('${ex.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;font-family:'JetBrains Mono',monospace;font-size:10px;margin-bottom:6px">
+            <div><span style="color:var(--td)">TGT:</span> <span style="color:var(--tp)">${targetDisplay}</span></div>
+            <div><span style="color:var(--td)">PR:</span> <span style="color:var(--tp)">${prDisplay}</span></div>
+            <div><span style="color:var(--td)">NXT:</span> <span style="color:var(--tp)">${nextDisplay}</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--td)">SESSIONS: ${sessionsDone}</div>
+            <div class="progress-bar" style="flex:1;height:2px;background:var(--border);margin:0"><div class="progress-fill" style="width:${progPct}%;background:var(--tp)"></div></div>
+          </div>
+        `;
+        grid.appendChild(card);
   });
 
   renderWorkoutHistory();
@@ -2735,14 +2699,14 @@ function renderWorkoutHistory() {
     const d=new Date(log.date);
         const ex=S.exercises.find(x=>x.id===log.exerciseId)||{isHold:false};
         const u=ex.isHold?'s':'';
-        const durTag = log.duration ? `  •  ⏱ ${log.duration}m` : '';
-        c.innerHTML+=`<div class="card" style="padding:8px 10px;border-left:2px solid var(--green)">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-weight:600;font-size:12px">${log.exerciseName}</span>
-            <span class="mono" style="font-size:9px;color:var(--td)">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</span>
-          </div>
-          <div class="mono" style="font-size:10px;color:var(--tm);margin-top:2px">${log.sets}×${log.reps}${u}${durTag}${log.notes?'  •  '+log.notes:''}</div>
-        </div>`;
+                const durTag = log.duration ? `  •  ⏱ ${log.duration}m` : '';
+                c.innerHTML+=`<div style="padding:6px 0;border-bottom:1px solid var(--border)">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-weight:500;font-size:12px;color:var(--tp)">${log.exerciseName}</span>
+                    <span class="mono" style="font-size:9px;color:var(--td)">${d.getMonth()+1}/${d.getDate()}</span>
+                  </div>
+                  <div class="mono" style="font-size:10px;color:var(--tm);margin-top:2px">${log.sets}×${log.reps}${u}${durTag}${log.notes?'  •  '+log.notes:''}</div>
+                </div>`;
   });
 }
 
@@ -2757,46 +2721,7 @@ function updatePhysStats() {
 
 // Flashcards module removed
 
-  // ═══════════════════════════════════════════════
-  // MEDITATION
-  // ═══════════════════════════════════════════════
-window.logMeditation = function() {
-  const dur=parseInt($('med-duration').value),type=$('med-type').value,q=parseInt($('med-quality').value),notes=$('med-notes').value;
-  if(!dur||dur<1){ toast('ERR: Enter duration','red'); return; }
-  pushAppHistory();
-  S.neural.meditation_log.push({id:'m_'+Date.now(),date:Date.now(),duration:dur,type,quality:q||3,notes});
-  const xp=Math.min(60,dur);
-  addXP(xp,'MEDITATION');
-  $('med-duration').value=''; $('med-notes').value='';
-  window.save(); window.renderMeditation(); window.closeModal('meditation-modal');
-}
-
-window.renderMeditation = function() {
-  const logs=[...S.neural.meditation_log].reverse();
-  const list=$('med-log-list'); if(!list) return;
-  list.innerHTML='';
-  logs.slice(0,20).forEach(log=>{
-    const d=new Date(log.date);
-    list.innerHTML+=`<div class="card" style="padding:8px 10px;border-left:2px solid var(--purple)">
-      <div style="display:flex;justify-content:space-between">
-        <span style="font-weight:600;font-size:12px">${log.type}</span>
-        <span class="mono" style="font-size:9px;color:var(--td)">${d.getMonth()+1}/${d.getDate()}</span>
-      </div>
-      <div class="mono" style="font-size:10px;color:var(--tm);margin-top:2px">${log.duration} min · ${'★'.repeat(log.quality||0)}${'☆'.repeat(5-(log.quality||0))}${log.notes?' · '+log.notes:''}</div>
-    </div>`;
-  });
-  // Stats
-  const now=new Date();
-  const weekStart=new Date(now); weekStart.setDate(now.getDate()-7);
-  const weekTotal=S.neural.meditation_log.filter(l=>l.date>=weekStart.getTime()).reduce((a,l)=>a+l.duration,0);
-  $('med-weekly').innerText=weekTotal+' min';
-  // Streak
-  let streak=0, d=new Date();
-  const medDays=new Set(S.neural.meditation_log.map(l=>dateKey(new Date(l.date))));
-  while(medDays.has(dateKey(d))){ streak++; d.setDate(d.getDate()-1); }
-  $('med-streak').innerText=streak;
-  $('stat-med').innerText=S.neural.meditation_log.reduce((a,l)=>a+l.duration,0);
-}
+  
 
 // ═══════════════════════════════════════════════
 // DPS PENTAGON ENGINE
@@ -2875,11 +2800,8 @@ function computePentagonFromDPS() {
     else { tmGrind += (t.xp || 25) / 100; if(t.completed) tGrind += (t.xp || 25) / 100; }
   });
 
-  var medLogs = (S.neural && S.neural.meditation_log) ? S.neural.meditation_log : [];
   var wkLogs = S.workout_log || [];
-  var medMin = medLogs.filter(function(l) { return dateKey(new Date(l.date)) === today; })
-                      .reduce(function(a, l) { return a + l.duration; }, 0);
-  var medBoost = Math.min(1, medMin / 30);
+    var medBoost = 0;
   var wkToday = wkLogs.filter(function(l) { return dateKey(new Date(l.date)) === today; }).length;
   var wkBoost = Math.min(1, wkToday / 2);
 
