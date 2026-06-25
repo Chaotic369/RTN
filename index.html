@@ -77,9 +77,6 @@ nav, .modal, .toast, .fc-face {
 input, textarea, select, button { outline: none; font-family: inherit; }
 input, textarea, select { background: transparent !important; border: 1px solid var(--border) !important; outline: none !important; color: var(--tp); padding: 8px 16px; font-size: 13px; border-radius: 8px; transition: all 150ms ease; }
 input:focus, textarea:focus, select:focus { border-color: var(--tm) !important; }
-
-#tools-sidebar { position: fixed; top: 0; right: 0; width: 260px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); transform: translateX(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); z-index: 9999; padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: -4px 0 24px rgba(0,0,0,0.2); }
-#tools-sidebar.open { transform: translateX(0); }
 button { cursor: pointer; border-radius: 9999px; }
 
 .btn { border: none !important; outline: none !important; color: var(--tm); padding: 8px 16px; font-size: 12px; font-weight: 500; background: var(--elevated); transition: all 120ms; border-radius: 9999px; }
@@ -117,18 +114,18 @@ button { cursor: pointer; border-radius: 9999px; }
 /* Floating Bars */
 .floating-bar {
   position: fixed;
-  bottom: 96px !important;
+  bottom: 24px !important;
   right: 24px !important;
-  width: 50vw !important;
-  max-width: calc(100vw - 48px) !important;
+  width: 320px !important;
+  max-width: calc(100vw - 32px) !important;
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
-  border-radius: 24px !important;
-  padding: 12px 16px !important;
+  border-radius: 9999px !important;
+  padding: 6px 12px !important;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.8) !important;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
   z-index: 100;
   transition: all 0.2s ease;
 }
@@ -587,7 +584,11 @@ h1, h2, h3 { color: var(--tp); }
                                           <button class="nav-tab" data-view="view-matrix" title="MATRIX" style="padding:0 10px"><i class="fa-solid fa-chart-simple" style="font-size:11px"></i></button>
                               </div>
                               <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px">
-                                                <button class="btn" style="padding:3px 8px;font-size:10px" title="Tools" onclick="document.getElementById('tools-sidebar').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
+                                                <button class="btn" style="padding:3px 8px;font-size:10px" title="Toggle Theme" onclick="document.documentElement.classList.toggle('light')"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                                                <button id="btn-undo-app" class="btn" style="padding:3px 8px;font-size:10px" title="Undo Last Action"><i class="fa-solid fa-rotate-left"></i></button>
+                                                <button class="btn btn-blue" style="padding:3px 8px;font-size:10px" title="Morning Intention" onclick="window.openMorningIntention()"><i class="fa-solid fa-sun"></i></button>
+                                                <button class="btn btn-purple" style="padding:3px 8px;font-size:10px" title="Nightly Debrief" onclick="window.openDebrief()"><i class="fa-solid fa-moon"></i></button>
+                                                <button class="btn btn-teal" style="padding:3px 8px;font-size:10px" title="Log Sleep" onclick="window.openSleepLog()"><i class="fa-solid fa-bed"></i></button>
                                               </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
@@ -614,25 +615,13 @@ h1, h2, h3 { color: var(--tp); }
               </div>
             </nav>
 
-            <div id="tools-sidebar">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-                <h3 class="mono" style="font-size:12px;margin:0;color:var(--td);letter-spacing:0.1em">SYSTEM TOOLS</h3>
-                <button class="btn" style="padding:3px 8px;font-size:10px;background:transparent" onclick="document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-              <button class="btn" style="text-align:left;background:transparent;border:1px solid var(--border)!important" onclick="document.documentElement.classList.toggle('light')"><i class="fa-solid fa-circle-half-stroke" style="width:20px"></i> Toggle Theme</button>
-              <button id="btn-undo-app" class="btn" style="text-align:left;background:transparent;border:1px solid var(--border)!important" title="Undo Last Action"><i class="fa-solid fa-rotate-left" style="width:20px"></i> Undo Last Action</button>
-              <button class="btn" style="text-align:left;color:var(--blue);background:transparent;border:1px solid var(--border)!important" onclick="window.openMorningIntention(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-sun" style="width:20px"></i> Morning Intention</button>
-              <button class="btn" style="text-align:left;color:var(--purple);background:transparent;border:1px solid var(--border)!important" onclick="window.openDebrief(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-moon" style="width:20px"></i> Nightly Debrief</button>
-              <button class="btn" style="text-align:left;color:var(--teal);background:transparent;border:1px solid var(--border)!important" onclick="window.openSleepLog(); document.getElementById('tools-sidebar').classList.remove('open')"><i class="fa-solid fa-bed" style="width:20px"></i> Log Sleep</button>
-            </div>
-
             <div id="view-command" class="view active" style="flex-direction:row">
   <div style="flex:0 0 58%;display:flex;flex-direction:column;gap:10px;height:100%;overflow:hidden">
 
     <div class="floating-bar">
                               <span class="mono" style="color:var(--green);font-weight:700;font-size:16px">›</span>
-                              <input id="cmd-input" type="text" class="mono" placeholder="Inject directive..." style="font-size:14px !important;">
-                              <button class="btn btn-blue" style="padding:8px 14px;font-size:12px" onclick="window.openNewTaskModal()"><i class="fa-solid fa-plus"></i></button>
+                              <input id="cmd-input" type="text" class="mono" placeholder="Inject directive...">
+                              <button class="btn btn-blue" style="padding:6px 12px;font-size:11px" onclick="window.openNewTaskModal()"><i class="fa-solid fa-plus"></i></button>
                             </div>
 
     <div class="card" style="padding:8px 12px;flex-shrink:0;background:rgba(92,157,255,0.03);cursor:pointer" onclick="window.openMorningIntention()">
@@ -751,10 +740,9 @@ h1, h2, h3 { color: var(--tp); }
         <div id="workout-history" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
       </div>
 
-      <div class="floating-bar" style="width: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; right: 24px !important; justify-content: flex-end;">
-                <button class="btn" style="background:var(--surface);border:1px solid var(--border)!important;padding:12px 16px;font-size:11px" onclick="window.openExerciseModal()"><i class="fa-solid fa-plus"></i> EXERCISE</button>
-                <button class="btn btn-green" style="padding:12px 16px;font-size:11px" onclick="window.openModal('session-modal')"><i class="fa-solid fa-dumbbell"></i> SESSION</button>
-            </div>
+      <div class="floating-bar" style="width: auto !important; right: 24px !important; justify-content: flex-end;">
+                    <button class="btn btn-purple" style="padding:6px 12px;font-size:11px" onclick="window.openModal('meditation-modal')"><i class="fa-solid fa-brain"></i> MEDITATE</button>
+                  </div>
     </div>
 </div>
 
@@ -875,14 +863,14 @@ h1, h2, h3 { color: var(--tp); }
       <div style="font-size:11px;color:var(--td);margin-top:4px">No sleep data yet. <button class="btn btn-teal" style="padding:2px 6px;font-size:9px;display:inline" onclick="window.openSleepLog()">LOG TONIGHT</button></div>
     </div>
     <div class="card" style="flex:1;min-width:160px;padding:12px;border-left:2px solid var(--green);display:flex;flex-direction:column;justify-content:space-between">
-      <div>
-        <div class="label">WEEKLY REVIEW</div>
-        <div id="matrix-weekly-count" style="font-size:11px;color:var(--td);margin-top:4px">0 reviews logged</div>
-      </div>
-      <button class="btn btn-green" style="margin-top:10px;padding:5px 10px;font-size:10px;width:100%" onclick="window.openWeeklyReview()">▶ REVIEW WEEK</button>
-    </div>
-  </div>
+          <div>
+            <div class="label">WEEKLY REVIEW</div>
+            <div id="matrix-weekly-count" style="font-size:11px;color:var(--td);margin-top:4px">0 reviews logged</div>
+          </div>
+          <button class="btn btn-green" style="margin-top:10px;padding:5px 10px;font-size:10px;width:100%" onclick="window.openWeeklyReview()">▶ REVIEW WEEK</button>
         </div>
+      </div>
+            </div>
 
         <div id="view-budget" class="view" style="flex-direction:column; gap:12px; overflow-y:auto">
            <div style="display:flex; gap:10px; flex-shrink:0; flex-wrap:wrap">
@@ -903,9 +891,9 @@ h1, h2, h3 { color: var(--tp); }
            <div class="floating-bar">
                                                            <span class="mono" style="color:var(--amber);font-weight:700;font-size:16px;display:flex;align-items:center;padding-bottom:2px">›</span>
        
-                                                           <input id="budget-item" type="text" class="mono" placeholder="Amount + Item" autocomplete="off" style="font-size:14px !important;" onkeydown="if(event.key==='Enter')window.addBudgetEntry()" oninput="window.checkBudgetPerson()">
+                                                           <input id="budget-item" type="text" class="mono" placeholder="Amount + Item" autocomplete="off" onkeydown="if(event.key==='Enter')window.addBudgetEntry()" oninput="window.checkBudgetPerson()">
        
-                                                           <button class="btn btn-amber" style="padding:8px 14px;font-size:12px" onclick="window.addBudgetEntry()"><i class="fa-solid fa-plus"></i></button>
+                                                           <button class="btn btn-amber" style="padding:6px 12px;font-size:11px" onclick="window.addBudgetEntry()"><i class="fa-solid fa-plus"></i></button>
                                                        </div>
    
            <div style="display:flex;flex-wrap:wrap;gap:5px;padding:6px 2px;flex-shrink:0">
@@ -919,9 +907,9 @@ h1, h2, h3 { color: var(--tp); }
                           <button class="btn" style="font-size:9px;padding:3px 8px;color:var(--tm)" onclick="window.budgetSelectCat('tf')">tf · TAKEN FROM</button>
                       </div>
 
-                      <div id="budget-person-container" class="floating-bar" style="display:none; bottom: 160px !important; right: 24px !important; width: 30vw !important;">
+                      <div id="budget-person-container" class="floating-bar" style="display:none; bottom: 74px !important; right: 24px !important; width: 320px !important;">
                                                                                  <span class="mono" style="color:var(--tm);font-size:14px">@</span>
-                                                                                 <input id="budget-person" type="text" placeholder="Person name..." style="font-size:13px !important;">
+                                                                                 <input id="budget-person" type="text" placeholder="Person name...">
                                                                              </div>
 
            <!-- LEDGER / STATS TABS -->
