@@ -1058,6 +1058,7 @@ if(!S.detox_streak) S.detox_streak = 0;
 if(!S.detox_last_tax_date) S.detox_last_tax_date = null;
 if(!S.timeline_completed) S.timeline_completed = {};
 if(!S.timeline_completed_times) S.timeline_completed_times = {};
+if(!S.timeline_skipped) S.timeline_skipped = {};
 if(!S.neural.subjects) S.neural.subjects = [];
 if(!S.neural.meditation_log) S.neural.meditation_log = [];
 if(!S.taskSortMode) S.taskSortMode = 'time';
@@ -1109,7 +1110,8 @@ window.syncFromFirebase = function() {
             if(!S.detox_streak) S.detox_streak = 0;
             if(!S.timeline_completed) S.timeline_completed = {};
                         if(!S.timeline_completed_times) S.timeline_completed_times = {};
-                        if(!S.neural) S.neural = JSON.parse(JSON.stringify(DEFAULT.neural));
+                                                if(!S.timeline_skipped) S.timeline_skipped = {};
+                                                if(!S.neural) S.neural = JSON.parse(JSON.stringify(DEFAULT.neural));
             if(!S.neural.subjects) S.neural.subjects = [];
             if(!S.neural.meditation_log) S.neural.meditation_log = [];
             if(!S.taskSortMode) S.taskSortMode = 'time';
@@ -1511,24 +1513,38 @@ window.toggleTimelineBlockCompletion = function(id, event) {
     }
   } else {
       if (id === S.timeline[0].id) {
-        var lastId = S.timeline[S.timeline.length-1].id;
-        var lastIdx = S.timeline_completed[today].indexOf(lastId);
-        if (lastIdx >= 0) {
-          S.timeline_completed[today].splice(lastIdx, 1);
-          if (S.timeline_completed_times && S.timeline_completed_times[today]) {
-            delete S.timeline_completed_times[today][lastId];
-          }
-        }
-      }
-      S.timeline_completed[today].push(id);
-          if(!S.timeline_completed_times) S.timeline_completed_times = {};
-          if(!S.timeline_completed_times[today]) S.timeline_completed_times[today] = {};
-          S.timeline_completed_times[today][id] = Date.now();
-        var rect = event.currentTarget.getBoundingClientRect();
-        addXP(15, `COMPLETED PROTOCOL: ${block.label}`, rect.left, rect.top);
-    window.shiftTimelineFromTask(id, false);
-    
-    var tIndex = S.timeline.findIndex(t => t.id === id);
+                  var lastId = S.timeline[S.timeline.length-1].id;
+                  var lastIdx = S.timeline_completed[today].indexOf(lastId);
+                  if (lastIdx >= 0) {
+                    S.timeline_completed[today].splice(lastIdx, 1);
+                    if (S.timeline_completed_times && S.timeline_completed_times[today]) {
+                      delete S.timeline_completed_times[today][lastId];
+                    }
+                  }
+                }
+
+                var tIndex = S.timeline.findIndex(t => t.id === id);
+                var autoCompletedCount = 0;
+                for (var i = 0; i <= tIndex; i++) {
+                    var pBlock = S.timeline[i];
+                    if (S.timeline_completed[today].indexOf(pBlock.id) === -1) {
+                        S.timeline_completed[today].push(pBlock.id);
+                        if(!S.timeline_completed_times) S.timeline_completed_times = {};
+                        if(!S.timeline_completed_times[today]) S.timeline_completed_times[today] = {};
+                        S.timeline_completed_times[today][pBlock.id] = Date.now();
+                  
+                        if (pBlock.id === id) {
+                            var rect = event.currentTarget.getBoundingClientRect();
+                            addXP(15, `COMPLETED PROTOCOL: ${pBlock.label}`, rect.left, rect.top);
+                        } else {
+                            addXP(15, `AUTO-CATCHUP: ${pBlock.label}`);
+                            autoCompletedCount++;
+                        }
+                    }
+                }
+                if (autoCompletedCount > 0) toast('AUTO-COMPLETED ' + autoCompletedCount + ' PREVIOUS PROTOCOLS', 'purple');
+
+                window.shiftTimelineFromTask(id, false);
     if (tIndex !== -1 && tIndex < S.timeline.length - 1) {
         var nextTl = S.timeline[tIndex + 1];
         var nextT1 = timeToMins(nextTl.time);
@@ -1550,37 +1566,40 @@ function renderTimeline() {
   $('tl-date').innerText = dateStr;
 
   const today = dateKey(now);
-  if(!S.timeline_completed[today]) S.timeline_completed[today] = [];
+    if(!S.timeline_completed[today]) S.timeline_completed[today] = [];
+    if(!S.timeline_skipped) S.timeline_skipped = {};
+    if(!S.timeline_skipped[today]) S.timeline_skipped[today] = [];
 
-  let activeBlock = null;
-  let doneCount = 0;
+    let activeBlock = null;
+    let doneCount = 0;
 
-  S.timeline.forEach((block, i) => {
-    const blockMins = timeToMins(block.time);
-    const nextMins = i < S.timeline.length-1 ? timeToMins(S.timeline[i+1].time) : timeToMins(S.timeline[0].time) + 24*60;
-    const isPast = nowMins > nextMins;
-    const isActive = nowMins >= blockMins && nowMins < nextMins;
-    const isDone = S.timeline_completed[today].includes(block.id);
-    if(isDone) doneCount++;
+    S.timeline.forEach((block, i) => {
+      const blockMins = timeToMins(block.time);
+      const nextMins = i < S.timeline.length-1 ? timeToMins(S.timeline[i+1].time) : timeToMins(S.timeline[0].time) + 24*60;
+      const isPast = nowMins > nextMins;
+      const isActive = nowMins >= blockMins && nowMins < nextMins;
+      const isDone = S.timeline_completed[today].includes(block.id);
+      const isSkipped = S.timeline_skipped[today].includes(block.id);
+      if(isDone || isSkipped) doneCount++;
 
-    if (isActive) {
-          activeBlock = { block, remaining: nextMins - nowMins };
-        }
+      if (isActive) {
+            activeBlock = { block, remaining: nextMins - nowMins };
+          }
 
-        const cleanLabel = block.label.replace(/\s*\[.*?\]\s*/g, ' ').trim();
+          const cleanLabel = block.label.replace(/\s*\[.*?\]\s*/g, ' ').trim();
 
-        const el = document.createElement('div');
-        el.className = 'tl-block' + (isPast?' past':'') + (isActive?' active-block':'');
-        el.style.position = 'relative';
-        if(isDone) el.style.opacity = '.5';
-        if(isActive) el.style.borderLeftColor = block.color;
-        el.innerHTML = `
-          <div class="task-check ${isDone?'checked':''}" style="margin-right:8px; width:13px; height:13px;" onclick="window.toggleTimelineBlockCompletion('${block.id}', event)">${isDone?'<i class="fa-solid fa-check" style="font-size:7px;color:#0b0b0b"></i>':''}</div>
-          <span style="min-width:38px;color:${isActive?block.color:'var(--td)'};font-size:10px;${isDone?'text-decoration:line-through':''}">${block.time}</span>
-                    <span style="color:${isActive?block.color:(isPast?'var(--td)':'var(--tm)')};font-size:11px;flex:1;${isDone?'text-decoration:line-through':''}">${cleanLabel}</span>
-                    ${isActive && !isDone?'<span style="font-size:8px;color:'+block.color+';margin-left:4px">◄ NOW</span>':''}
-          <span class="mono" style="font-size:11px;color:${isDone?'var(--td)':'var(--blue)'};margin-left:6px;margin-right:4px;flex-shrink:0">15 XP</span>
-                    <div class="tl-controls" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);align-items:center;gap:6px;background:var(--elevated);padding:4px 6px;border-radius:6px;box-shadow:-6px 0 12px var(--panel)">
+          const el = document.createElement('div');
+          el.className = 'tl-block' + (isPast?' past':'') + (isActive?' active-block':'');
+          el.style.position = 'relative';
+          if(isDone || isSkipped) el.style.opacity = '.5';
+          if(isActive) el.style.borderLeftColor = block.color;
+          el.innerHTML = `
+            <div class="task-check ${isDone?'checked':''} ${isSkipped?'failed':''}" style="margin-right:8px; width:13px; height:13px;" onclick="window.toggleTimelineBlockCompletion('${block.id}', event)">${isDone?'<i class="fa-solid fa-check" style="font-size:7px;color:#0b0b0b"></i>':(isSkipped?'<i class="fa-solid fa-minus" style="font-size:7px;color:#fff"></i>':'')}</div>
+            <span style="min-width:38px;color:${isActive?block.color:'var(--td)'};font-size:10px;${(isDone||isSkipped)?'text-decoration:line-through':''}">${block.time}</span>
+                      <span style="color:${isActive?block.color:(isPast?'var(--td)':'var(--tm)')};font-size:11px;flex:1;${(isDone||isSkipped)?'text-decoration:line-through':''}">${cleanLabel}</span>
+                      ${isActive && !(isDone||isSkipped)?'<span style="font-size:8px;color:'+block.color+';margin-left:4px">◄ NOW</span>':''}
+            <span class="mono" style="font-size:11px;color:${(isDone||isSkipped)?'var(--td)':'var(--blue)'};margin-left:6px;margin-right:4px;flex-shrink:0">15 XP</span>
+                      <div class="tl-controls" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);align-items:center;gap:6px;background:var(--elevated);padding:4px 6px;border-radius:6px;box-shadow:-6px 0 12px var(--panel)">
                       <button class="btn" style="background:var(--surface);border:1px solid rgba(255,255,255,0.08)!important;color:var(--td);padding:4px 8px;border-radius:4px;font-size:10px;cursor:pointer" onclick="event.stopPropagation(); window.openTimelineModal('${block.id}')"><i class="fa-solid fa-pen"></i></button>
                       <button class="btn" style="background:var(--surface);border:1px solid rgba(255,255,255,0.08)!important;color:var(--red);padding:4px 8px;border-radius:4px;font-size:10px;cursor:pointer" onclick="event.stopPropagation(); window.deleteTimelineItem('${block.id}')"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -2189,14 +2208,27 @@ window.activeTaskComplete = function() {
        var today = dateKey(new Date());
        if(!S.timeline_completed[today]) S.timeline_completed[today] = [];
        if(S.timeline_completed[today].indexOf(S.activeTask.id) === -1) {
-           S.timeline_completed[today].push(S.activeTask.id);
-                      if(!S.timeline_completed_times) S.timeline_completed_times = {};
-                      if(!S.timeline_completed_times[today]) S.timeline_completed_times[today] = {};
-                      S.timeline_completed_times[today][S.activeTask.id] = Date.now();
-                      addXP(15, `COMPLETED PROTOCOL: ${document.getElementById('at-title').innerText}`);
-           window.shiftTimelineFromTask(S.activeTask.id, false);
-           
-           var tIndex = S.timeline.findIndex(t => t.id === S.activeTask.id);
+                      var tIndex = S.timeline.findIndex(t => t.id === S.activeTask.id);
+                      var autoCompletedCount = 0;
+                      for (var i = 0; i <= tIndex; i++) {
+                          var pBlock = S.timeline[i];
+                          if (S.timeline_completed[today].indexOf(pBlock.id) === -1) {
+                              S.timeline_completed[today].push(pBlock.id);
+                              if(!S.timeline_completed_times) S.timeline_completed_times = {};
+                              if(!S.timeline_completed_times[today]) S.timeline_completed_times[today] = {};
+                              S.timeline_completed_times[today][pBlock.id] = Date.now();
+                       
+                              if (pBlock.id === S.activeTask.id) {
+                                  addXP(15, `COMPLETED PROTOCOL: ${document.getElementById('at-title').innerText}`);
+                              } else {
+                                  addXP(15, `AUTO-CATCHUP: ${pBlock.label}`);
+                                  autoCompletedCount++;
+                              }
+                          }
+                      }
+                      if (autoCompletedCount > 0) toast('AUTO-COMPLETED ' + autoCompletedCount + ' PREVIOUS PROTOCOLS', 'purple');
+
+                      window.shiftTimelineFromTask(S.activeTask.id, false);
            S.activeTask = null;
            if (tIndex !== -1 && tIndex < S.timeline.length - 1) {
                var nextTl = S.timeline[tIndex + 1];
