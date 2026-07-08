@@ -3113,19 +3113,39 @@ window.renderBudget = function() {
     let total = 0;
     let onlineTotal = 0;
     let cashTotal = 0;
-    const entries = [...(S.budget||[])].reverse();
+    
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    
+    if($('ledger-month-label')) {
+        $('ledger-month-label').innerText = '· ' + MONTH_NAMES[currentMonth] + ' ' + currentYear;
+    }
+
+    // 1. Calculate all-time balances globally
+    (S.budget || []).forEach(b => {
+        if(b.category.toLowerCase() === 'taken from') {
+            total += b.amount;
+            if(b.mode === 'Online') onlineTotal += b.amount;
+            else cashTotal += b.amount;
+        } else {
+            total -= b.amount;
+            if(b.mode === 'Online') onlineTotal -= b.amount;
+            else cashTotal -= b.amount;
+        }
+    });
+
+    // 2. Filter list to ONLY render current month's items
+    const entries = [...(S.budget||[])].filter(b => {
+        const d = new Date(b.date);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    }).reverse();
     
     if(entries.length === 0) {
-            list.innerHTML = '<div class="mono" style="color:var(--td);font-size:11px;padding:8px 4px">› no transactions recorded.</div>';
-            if($('budget-total')) { $('budget-total').innerText = '₹0'; $('budget-total').style.color = 'var(--tp)'; }
-            if($('budget-online')) { $('budget-online').innerText = '₹0'; $('budget-online').style.color = 'var(--tp)'; }
-            if($('budget-cash')) { $('budget-cash').innerText = '₹0'; $('budget-cash').style.color = 'var(--tp)'; }
-            return;
-        }
-    
+        list.innerHTML = '<div class="mono" style="color:var(--td);font-size:11px;padding:8px 4px">› no transactions recorded this month.</div>';
+    } else {
         let lastDateKey = '';
-        const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-
         entries.forEach(b => {
             const d = new Date(b.date);
             let title = b.category;
@@ -3136,15 +3156,9 @@ window.renderBudget = function() {
             if(b.category.toLowerCase() === 'taken from') {
                 amountText = `+₹${b.amount}`;
                 color = 'var(--green)';
-                total += b.amount;
-                if(b.mode === 'Online') onlineTotal += b.amount;
-                else cashTotal += b.amount;
             } else {
                 amountText = `-₹${b.amount}`;
                 color = 'var(--red)';
-                total -= b.amount;
-                if(b.mode === 'Online') onlineTotal -= b.amount;
-                else cashTotal -= b.amount;
             }
         
             const dateGroup = d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
@@ -3170,6 +3184,7 @@ window.renderBudget = function() {
                 </div>
             `;
         });
+    }
     
     if($('budget-total')) {
         $('budget-total').innerText = (total < 0 ? '-₹' : '₹') + Math.abs(total);
