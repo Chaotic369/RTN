@@ -736,15 +736,11 @@ h1, h2, h3 { color: var(--tp); }
 
   <div style="flex:0 0 37%;display:flex;flex-direction:column;gap:10px;height:100%;padding-left:4px">
       <div class="card" style="padding:14px;flex:1;overflow:hidden;display:flex;flex-direction:column">
-        <div class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--tp);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:10px">RECENT HISTORY</div>
-        <div id="workout-history" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+              <div class="mono" style="font-size:10px;letter-spacing:.08em;color:var(--tp);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:10px">RECENT HISTORY</div>
+              <div id="workout-history" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
       </div>
-
-      <div class="floating-bar" style="width: auto !important; right: 24px !important; justify-content: flex-end;">
-                    <button class="btn btn-purple" style="padding:6px 12px;font-size:11px" onclick="window.openModal('meditation-modal')"><i class="fa-solid fa-brain"></i> MEDITATE</button>
-                  </div>
-    </div>
-</div>
 
 
 
@@ -997,12 +993,11 @@ const DEFAULT = {
       {id:'e5',name:'Bodyweight Squats',group:'LEGS',targetSets:3,targetReps:20,prSets:0,prReps:0,isHold:false}
     ],
   neural: {
-    decks:[{id:'d_quant',name:'Quant Fundamentals',cards:[
-      {id:'c1',front:"What is Itô's Lemma?",back:"A result in stochastic calculus for computing the differential of a function of a stochastic process (like Brownian motion). Foundation of Black-Scholes derivation.",due:0,interval:1,ef:2.5}
-    ]}],
-    subjects:[],
-    meditation_log:[]
-  },
+      decks:[{id:'d_quant',name:'Quant Fundamentals',cards:[
+        {id:'c1',front:"What is Itô's Lemma?",back:"A result in stochastic calculus for computing the differential of a function of a stochastic process (like Brownian motion). Foundation of Black-Scholes derivation.",due:0,interval:1,ef:2.5}
+      ]}],
+      subjects:[]
+    },
   heatmap: {},
     global_streak: 0,
     last_active_date: null,
@@ -1064,7 +1059,6 @@ if(!S.timeline_completed) S.timeline_completed = {};
 if(!S.timeline_completed_times) S.timeline_completed_times = {};
 if(!S.timeline_skipped) S.timeline_skipped = {};
 if(!S.neural.subjects) S.neural.subjects = [];
-if(!S.neural.meditation_log) S.neural.meditation_log = [];
 if(!S.taskSortMode) S.taskSortMode = 'time';
 if(!S.taskFilter) S.taskFilter = 'all';
                         if(!S.taskCatFilter) S.taskCatFilter = '';
@@ -1118,9 +1112,8 @@ window.syncFromFirebase = function() {
                         if(!S.timeline_completed_times) S.timeline_completed_times = {};
                                                 if(!S.timeline_skipped) S.timeline_skipped = {};
                                                 if(!S.neural) S.neural = JSON.parse(JSON.stringify(DEFAULT.neural));
-            if(!S.neural.subjects) S.neural.subjects = [];
-            if(!S.neural.meditation_log) S.neural.meditation_log = [];
-            if(!S.taskSortMode) S.taskSortMode = 'time';
+                                                            if(!S.neural.subjects) S.neural.subjects = [];
+                                                            if(!S.taskSortMode) S.taskSortMode = 'time';
                         if(!S.taskFilter) S.taskFilter = 'all';
                                                 if(!S.taskCatFilter) S.taskCatFilter = '';
                                                 if(!S.tasks) S.tasks = [];
@@ -2847,8 +2840,7 @@ function computePentagonFromDPS() {
   });
 
   var wkLogs = S.workout_log || [];
-    var medBoost = 0;
-  var wkToday = wkLogs.filter(function(l) { return dateKey(new Date(l.date)) === today; }).length;
+    var wkToday = wkLogs.filter(function(l) { return dateKey(new Date(l.date)) === today; }).length;
   var wkBoost = Math.min(1, wkToday / 2);
 
   function norm(dpsV, dpsM, taskV, taskM, blend) {
@@ -2866,9 +2858,9 @@ function computePentagonFromDPS() {
     norm(dpsAttr.strength, dpsMax.strength, wkBoost,           1,       0.4),
     discScore,
     norm(dpsAttr.grind,    dpsMax.grind,    tGrind,            tmGrind),
-    norm(dpsAttr.focus,    dpsMax.focus,    tFocus + medBoost, tmFocus + 1)
-  ];
-}
+        norm(dpsAttr.focus,    dpsMax.focus,    tFocus,            tmFocus)
+      ];
+    }
 
 // ═══════════════════════════════════════════════
 // MATRIX ENGINE
