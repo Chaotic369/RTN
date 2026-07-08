@@ -1136,8 +1136,9 @@ window.syncFromFirebase = function() {
                                                 if(!S.workout_log) S.workout_log = [];
                         if(!S.exercises) S.exercises = DEFAULT.exercises;
 
-                  if (typeof updateHeader === 'function') updateHeader();
-      if (typeof renderTasks === 'function') renderTasks();
+                                          if (typeof checkGlobalStreak === 'function') checkGlobalStreak();
+                                          if (typeof updateHeader === 'function') updateHeader();
+                              if (typeof renderTasks === 'function') renderTasks();
                   if (typeof window.renderActiveTask === 'function') window.renderActiveTask();
                   if (typeof renderExercises === 'function') renderExercises();
                   
@@ -3371,6 +3372,7 @@ function runBoot() {
 // INIT
 // ═══════════════════════════════════════════════
 window.onload = () => {
+  checkGlobalStreak();
   updateHeader();
   updateClock();
     renderTasks();
