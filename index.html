@@ -2585,6 +2585,29 @@ function renderSleepInsight() {
     <button class="btn btn-teal" style="padding:3px 8px;font-size:9px" onclick="window.openSleepLog()">LOG TONIGHT</button>`;
 }
 
+function checkGlobalStreak() {
+  const today = dateKey(new Date());
+  if (!S.last_active_date) {
+    S.last_active_date = today;
+    S.global_streak = 0;
+  } else if (S.last_active_date !== today) {
+    const lastDate = new Date(S.last_active_date);
+    const todayDate = new Date();
+    lastDate.setHours(0,0,0,0);
+    todayDate.setHours(0,0,0,0);
+    const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      S.global_streak = (S.global_streak || 0) + 1;
+    } else if (diffDays > 1) {
+      S.global_streak = 1;
+    }
+    S.last_active_date = today;
+    if (typeof window.save === 'function') window.save();
+  }
+  if ($('sys-streak')) $('sys-streak').innerText = S.global_streak || 0;
+}
+
 function checkDetoxStreak() {
   const today = dateKey(new Date());
   if (S.detox_last_checkin === today) return;
