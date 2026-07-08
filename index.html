@@ -1244,9 +1244,11 @@ function updateHeader() {
   const todayXP = S.heatmap[dateKey(new Date())] || 0;
   const dpct = Math.min(100, (todayXP / ld.needed) * 100);
   $('daily-xp-bar').style.width = dpct + '%';
-  $('daily-xp-text').innerText = `${todayXP} XP`;
+    $('daily-xp-text').innerText = `${todayXP} XP`;
   
-  if($('nav-avatar-fallback')) $('nav-avatar-fallback').innerText = uname.charAt(0).toUpperCase();
+    if($('sys-streak')) $('sys-streak').innerText = S.global_streak || 0;
+  
+    if($('nav-avatar-fallback')) $('nav-avatar-fallback').innerText = uname.charAt(0).toUpperCase();
   const imgEl = $('nav-avatar-img');
   const fallbackEl = $('nav-avatar-fallback');
   if(imgEl && fallbackEl) {
